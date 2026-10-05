@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DBT Skills — getting through, understanding, holding steady</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #f7f5f1;
+    color: #2c3642;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: 40px;
+  }
+  .page { max-width: 640px; margin: 0 auto; padding: 22px 14px 40px; }
+  header.top { text-align: center; position: relative; margin-bottom: 10px; }
+  header.top h1 { font-size: 27px; margin: 0 0 4px; font-weight: 650; letter-spacing: -.01em; }
+  .soust { color: #8a939d; font-size: 15px; margin: 0; }
+  #btnReglages { position: absolute; right: 0; top: 4px; background: none; border: none; color: #a3acb6; font-size: 14.5px; font-family: inherit; cursor: pointer; padding: 4px 2px; }
+  #btnReglages:hover { color: #2c3642; }
+
+  nav.tabs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 14px 0 16px; }
+  nav.tabs button { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid #e8e3db; background: #fff; color: #6b7684; border-radius: 999px; padding: .45rem .8rem; font: inherit; font-size: .84rem; font-weight: 700; cursor: pointer; }
+  nav.tabs button.on { background: #036798; border-color: #036798; color: #fff; }
+  nav.tabs button .ic { line-height: 0; }
+
+  .card { background: #fff; border-radius: 18px; padding: 16px 16px 14px; margin: 0 0 14px; box-shadow: 0 8px 26px rgba(46,38,28,.06); }
+  h2.sec { font-size: 13px; letter-spacing: 1.4px; text-transform: uppercase; color: #a3acb6; margin: 22px 2px 10px; font-weight: 700; }
+  .small { font-size: .88rem; }
+  .muted { color: #8a939d; }
+  b.lead { color: #2c3642; }
+
+  .skillhead { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
+  .skillhead h3 { margin: 0; font-size: 1rem; }
+  .skillhead .tag { font-size: 10.5px; letter-spacing: .8px; text-transform: uppercase; font-weight: 800; border-radius: 999px; padding: 3px 9px; background: var(--qb, #e6f1f8); color: var(--qc, #036798); }
+  .infoBtn { border: 0; background: transparent; color: #b3bcc5; cursor: pointer; padding: 2px 4px; border-radius: 8px; line-height: 0; margin-left: auto; }
+  .infoBtn:hover { color: #036798; }
+  p.line { font-size: .91rem; margin: 0 0 8px; color: #4a5866; }
+  ul.list { margin: 6px 0 0; padding-left: 18px; font-size: .91rem; }
+  ul.list li { margin: 5px 0; }
+  ul.list b { color: #2c3642; }
+
+  .addrow { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .addrow input, .addrow select { border: 1.5px solid #e8e3db; border-radius: 10px; padding: .5rem .65rem; font: inherit; font-size: .9rem; background: #fff; color: #2c3642; flex: 1; min-width: 0; }
+  .addrow input:focus, .addrow select:focus { outline: none; border-color: #036798; }
+  .addrow button { flex: none; }
+  .frm { display: grid; gap: 7px; margin-top: 8px; }
+  .frm label { font-size: .8rem; font-weight: 700; color: #7d8894; }
+  .frm input { border: 1.5px solid #e8e3db; border-radius: 10px; padding: .5rem .65rem; font: inherit; font-size: .9rem; background: #fff; color: #2c3642; width: 100%; }
+  .frm input:focus { outline: none; border-color: #036798; }
+
+  ul.items { list-style: none; margin: 10px 0 0; padding: 0; }
+  ul.items li { display: flex; align-items: flex-start; gap: 8px; background: #f7f5f1; border-radius: 12px; padding: 8px 10px; margin: 0 0 6px; font-size: .9rem; }
+  ul.items li .body { flex: 1; min-width: 0; overflow-wrap: break-word; }
+  ul.items li .body .t { font-weight: 650; }
+  ul.items li .body .s { font-size: .82rem; color: #8a939d; }
+  .xmini { border: 0; background: transparent; color: #a3acb6; cursor: pointer; font-size: 14px; line-height: 1; padding: 2px 4px; border-radius: 6px; flex: none; }
+  .xmini:hover { color: #b8437e; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 12px; padding: .58rem 1rem; font: inherit; font-weight: 700; font-size: .9rem; cursor: pointer; background: linear-gradient(135deg,#1389c1,#036798); color: #fff; }
+  .btn:hover { background: linear-gradient(135deg,#0d6fa2,#02567f); }
+  .btn.clair { background: #dceafa; color: #036798; }
+  .btn.clair:hover { background: #cfe0f3; }
+  .btn.danger { background: #fbe9f1; color: #a03a6b; }
+  .btn.large { display: block; width: 100%; text-align: center; margin: 0 0 10px; }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mention { text-align: center; color: #8a939d; font-size: 13px; margin: 20px 8px 0; }
+  .mention a { color: #036798; }
+  .credit { text-align: center; color: #b3bcc5; font-size: 12px; margin: 10px 8px 0; }
+
+  .timerZone { text-align: center; padding: 6px 0 2px; }
+  .timerTxt { font-size: 1.35rem; font-weight: 700; color: #036798; min-height: 2rem; }
+  .timerSub { font-size: .85rem; color: #8a939d; margin: 2px 0 10px; }
+
+  .voile { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(40,34,28,.35); z-index: 10; }
+  .panneau { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: 100%; max-width: 640px; z-index: 11; background: #fffdfa; border-radius: 20px 20px 0 0; padding: 20px 18px 24px; box-shadow: 0 -12px 40px rgba(46,38,28,.18); max-height: 88vh; overflow: auto; }
+  .panneau h2 { margin: 0 0 12px; font-size: 19px; }
+  .importlabel { cursor: pointer; }
+  .importlabel input { display: none; }
+  [hidden] { display: none !important; }
+  #toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(10px); background: #3a4652; color: #fff; border-radius: 999px; padding: .5rem .95rem; font-size: .85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: all .25s; z-index: 70; max-width: 90vw; }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media print {
+    #btnReglages, nav.tabs, .addrow, .xmini, .btn, #toast { display: none !important; }
+    body { background: #fff; font-size: 13px; }
+    .card { box-shadow: none; border: 1px solid #ddd; }
+  }
+
+  .outbar {
+    max-width: 640px; margin: 0 auto; padding: 12px 16px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: .85rem;
+  }
+  .outbar a { color: #036798; text-decoration: none; font-weight: 600; }
+  .outbar a:hover { text-decoration: underline; }
+  .outbar .langsw { color: #a3acb6; }
+  .outbar .langsw b { color: #b8437e; }
+  .outbar .langsw a { margin-left: 7px; }
+</style>
+</head>
+<body>
+<div class="outbar"><a href="../en.html">← All tools</a><span class="langsw"><a href="index.html">FR</a><b>EN</b></span></div>
+<div class="page">
+  <header class="top">
+    <h1>DBT Skills</h1>
+    <p class="soust">Getting through intense moments, understanding your emotions, holding steady in your relationships.</p>
+    <button id="btnReglages" type="button">Settings</button>
+  </header>
+
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  <main id="vue"></main>
+
+  <p class="mention">A tool from Authentique sexologie. It is meant to be used on your own and does not replace a consultation or follow-up. Your reflections can be reviewed during a brief intervention: <a href="https://authentiquesexo.ca" target="_blank" rel="noopener">authentiquesexo.ca</a>.</p>
+  <p class="credit">Based on DBT skills training (Marsha Linehan) — an educational, self-guided version.</p>
+  <div class="btnrow" style="justify-content:center;margin-top:14px">
+    <button class="btn clair" id="btnImprimer" type="button">Print (or PDF)</button>
+  </div>
+</div>
+
+<div class="voile" id="voile" hidden></div>
+<section class="panneau" id="panneau" hidden></section>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var CLE = "dbt-v1";
+  var ICONES = {
+    eye: '<path d="M2.5 12s3.5-6.6 9.5-6.6S21.5 12 21.5 12s-3.5 6.6-9.5 6.6S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.9"/>',
+    zap: '<path d="M13 2.5 4.5 14h6L10 21.5l8.5-11.5h-6l.5-7.5z"/>',
+    refresh: '<path d="M4 12a8 8 0 0 1 13.6-5.6M20 12a8 8 0 0 1-13.6 5.6"/><path d="M17.6 3.5v3h-3M6.4 20.5v-3h3"/>',
+    chat: '<path d="M4.5 6A2.5 2.5 0 0 1 7 3.5h10A2.5 2.5 0 0 1 19.5 6v6a2.5 2.5 0 0 1-2.5 2.5h-6l-4 3.5v-3.5h-.5A2.5 2.5 0 0 1 4.5 12V6z"/>',
+    dial: '<circle cx="9.2" cy="12" r="5.4"/><circle cx="14.8" cy="12" r="5.4"/>',
+    info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
+    plus: '<path d="M12 5.5v13M5.5 12h13"/>'
+  };
+  function ic(n, s) {
+    var p = ICONES[n]; if (!p) return "";
+    s = s || 16;
+    return '<svg class="ic" viewBox="0 0 24 24" width="' + s + '" height="' + s + '" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+  }
+  function uid() { return "e" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+  var etat = { v: 1, crise: [], emotions: [], convos: [], dialectiques: [] };
+  var stockageOk = true;
+  try { window.localStorage.setItem("__t_dbt", "1"); window.localStorage.removeItem("__t_dbt"); } catch (e) { stockageOk = false; }
+
+  function charger() {
+    if (!stockageOk) return;
+    try {
+      var brut = window.localStorage.getItem(CLE);
+      if (!brut) return;
+      var d = JSON.parse(brut);
+      if (!d || typeof d !== "object") return;
+      if (Array.isArray(d.crise)) etat.crise = d.crise.slice(0, 60).filter(function (x) { return typeof x === "string" && x.trim(); }).map(function (x) { return x.slice(0, 240); });
+      if (Array.isArray(d.emotions)) etat.emotions = d.emotions.slice(0, 100).filter(function (x) { return x && typeof x === "object"; }).map(function (x) {
+        return {
+          id: (typeof x.id === "string") ? x.id : uid(),
+          sit: String(x.sit || "").slice(0, 300), interp: String(x.interp || "").slice(0, 300),
+          emo: String(x.emo || "").slice(0, 120), inten: Math.max(0, Math.min(10, parseInt(x.inten, 10) || 0)),
+          impuls: String(x.impuls || "").slice(0, 300), utile: String(x.utile || "").slice(0, 300)
+        };
+      });
+      if (Array.isArray(d.convos)) etat.convos = d.convos.slice(0, 100).filter(function (x) { return x && typeof x === "object"; }).map(function (x) {
+        return {
+          id: (typeof x.id === "string") ? x.id : uid(),
+          d: String(x.d || "").slice(0, 300), e: String(x.e || "").slice(0, 300), a: String(x.a || "").slice(0, 300),
+          r: String(x.r || "").slice(0, 300), m: String(x.m || "").slice(0, 300), ac: String(x.ac || "").slice(0, 300), n: String(x.n || "").slice(0, 300)
+        };
+      });
+      if (Array.isArray(d.dialectiques)) etat.dialectiques = d.dialectiques.slice(0, 100).filter(function (x) { return x && typeof x === "object"; }).map(function (x) {
+        return { id: (typeof x.id === "string") ? x.id : uid(), a: String(x.a || "").slice(0, 240), b: String(x.b || "").slice(0, 240) };
+      });
+    } catch (e) { }
+  }
+  function sauver() {
+    if (!stockageOk) return;
+    try { window.localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) { stockageOk = false; }
+  }
+
+  var toastTimer = null;
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg; el.classList.add("show");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove("show"); }, 2200);
+  }
+
+  // ---------- onglets ----------
+  var TABS = [
+    { id: "pc", nom: "Mindfulness", ic: "eye" },
+    { id: "td", nom: "Distress tolerance", ic: "zap" },
+    { id: "re", nom: "Emotion regulation", ic: "refresh" },
+    { id: "ei", nom: "Interpersonal effectiveness", ic: "chat" },
+    { id: "di", nom: "Dialectics", ic: "dial" }
+  ];
+  var onglet = "pc";
+  var elTabs = document.getElementById("tabs");
+  var elVue = document.getElementById("vue");
+
+  function rendreTabs() {
+    elTabs.textContent = "";
+    TABS.forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = (onglet === t.id ? "on" : "");
+      b.innerHTML = ic(t.ic, 15) + " " + esc(t.nom);
+      b.addEventListener("click", function () { stopperMinuteur(); onglet = t.id; rendre(); window.scrollTo(0, 0); });
+      elTabs.appendChild(b);
+    });
+  }
+
+  // ---------- minuteur 60 s ----------
+  var minuteur = null, resteS = 0, phase = 0;
+  function stopperMinuteur() {
+    if (minuteur) { clearInterval(minuteur); minuteur = null; }
+    resteS = 0;
+  }
+  function minuteurHTML() {
+    return '<div class="card timerZone"><h3 style="margin:0 0 4px">A 60-second practice</h3>' +
+      '<p class="timerSub">Feet planted on the floor. Nothing to achieve — just observing.</p>' +
+      '<div class="timerTxt" id="timerTxt">Ready?</div>' +
+      '<div class="btnrow" style="justify-content:center;margin-top:6px">' +
+      '<button class="btn" id="btnTimer" type="button">Start</button>' +
+      '</div></div>';
+  }
+  function wireMinuteur() {
+    var btn = document.getElementById("btnTimer");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      var txt = document.getElementById("timerTxt");
+      if (minuteur) {
+        stopperMinuteur();
+        btn.textContent = "Start";
+        txt.textContent = "Ready?";
+        return;
+      }
+      resteS = 60; phase = 0;
+      btn.textContent = "Stop";
+      txt.textContent = "Breathe in gently…";
+      minuteur = setInterval(function () {
+        resteS--;
+        var t2 = document.getElementById("timerTxt");
+        var b2 = document.getElementById("btnTimer");
+        if (!t2 || !b2) { stopperMinuteur(); return; }
+        if (resteS <= 0) {
+          stopperMinuteur();
+          t2.textContent = "That's it.";
+          b2.textContent = "Start";
+          return;
+        }
+        var ph = (60 - resteS) % 8;
+        if (ph === 4) t2.textContent = "Breathe out slowly…";
+        else if (ph === 0) t2.textContent = "Breathe in gently…";
+      }, 1000);
+    });
+  }
+
+  var CONCEPT = {
+    pc: { t: "Mindfulness (in DBT)", p: [
+      "In DBT, mindfulness is not meditation to succeed at: it is training to be present to what is, without judging — so you can choose instead of reacting.",
+      "“What”: observe, describe, participate. “How”: without judgement, one thing at a time, doing what works."
+    ]},
+    stop: { t: "STOP — why it works", p: [
+      "When the reaction leaves faster than thought, STOP inserts a space between emotion and action.",
+      "The goal is not to feel nothing: it is that what follows is not decided by the wave. Four letters, thirty seconds."
+    ]},
+    tipp: { t: "TIPP — the body first", p: [
+      "When activation is at its peak, the mind does not settle the body — the body calms the mind.",
+      "Cold, brief intensity, slow breathing, release: physiological levers, to use first when it overflows."
+    ]},
+    accepts: { t: "ACCEPTS — healthy distractions", p: [
+      "These are not avoidance: occupations consciously chosen to hold on while the wave passes.",
+      "In small doses, they bring the intensity down — then you can return to the problem with more resources."
+    ]},
+    improve: { t: "IMPROVE — softening the passage", p: [
+      "Imagery, the senses, the meaning you give the ordeal, relaxation…: ways to make the moment more bearable without fleeing.",
+      "One thing at a time and real ten-minute breaks already count as skills."
+    ]},
+    rad: { t: "Radical acceptance", p: [
+      "A done deed cannot be negotiated. Fighting it adds suffering to pain.",
+      "Accepting is neither loving nor approving: it is freeing the energy of the fight to put it back into what can still change."
+    ]},
+    verif: { t: "Check the facts", p: [
+      "An emotion is always real — not always right. Comparing it to the facts lets you choose a useful next move rather than the automatic one.",
+      "Three questions: what actually happened? What story am I telling? Does the emotion match?"
+    ]},
+    opp: { t: "Opposite action", p: [
+      "When the impulse does not serve you, deliberately doing the opposite — gently, in small touches.",
+      "Repeated, opposite action soothes the emotion itself: it is training, not raw will, that does the work."
+    ]},
+    vuln: { t: "Reducing vulnerability", p: [
+      "Emotions are stronger when the body is running dry.",
+      "ABC — accumulating positives, building mastery, preparing for hard moments — and PLEASE — caring for sleep, food, movement: insurance, not luxury."
+    ]},
+    dear: { t: "DEAR MAN — the structure", p: [
+      "Describe, Express, Assert, Reinforce, stay mindful, confidence, Negotiate: seven ingredients to ask or refuse without losing yourself.",
+      "If it overflows, the goal already holds in the first three letters. It also works for preparing a written message."
+    ]},
+    give: { t: "GIVE — the bond first", p: [
+      "Gentleness, listening, validation, easy manner: what you give the other so the relationship holds — even if the disagreement stays whole.",
+      "Most useful when the relationship matters more than the stake of the moment."
+    ]},
+    fast: { t: "FAST — respecting yourself", p: [
+      "Being fair, limiting excessive excuses, staying true to your values, staying honest.",
+      "If, after the conversation, you still respect yourself — it is a success, whatever the other answered."
+    ]},
+    dial: { t: "Dialectics — the heart of DBT", p: [
+      "Two seemingly contradictory things can be true at the same time. Needing to decide absolutely creates the tension; “AND” replaces “but”.",
+      "The founding model: accepting what is, AND wanting change. Holding both is dancing with reality instead of fighting it."
+    ]}
+  };
+  function ib(id) { return '<button type="button" class="infoBtn" data-info="' + id + '" title="Learn more">' + ic("info", 16) + '</button>'; }
+  function ouvrirBulle(id) {
+    var c = CONCEPT[id]; if (!c) return;
+    elPanneau.innerHTML = '<h2>' + esc(c.t) + '</h2>' + c.p.map(function (x) { return '<p class="line">' + esc(x) + '</p>'; }).join('') + '<button class="btn large" id="btnFermerBulle" type="button">Close</button>';
+    elVoile.hidden = false; elPanneau.hidden = false;
+    document.getElementById("btnFermerBulle").addEventListener("click", fermerPanneau);
+  }
+  document.getElementById("vue").addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest("[data-info]") : null;
+    if (b) ouvrirBulle(b.getAttribute("data-info"));
+  });
+
+  // ---------- vues ----------
+  function vuePC() {
+    var h = '';
+    h += '<div class="card"><p class="small" style="margin:0">Mindfulness is the base: being present to what is, without judging. It can be trained — like a muscle. Three ways to do it (the “what”), three ways of doing it (the “how”).</p><div class="btnrow" style="margin-top:10px">'+ib('pc')+'</div></div>';
+    h += '<h2 class="sec">What to do</h2>';
+    h += '<div class="card"><ul class="list">' +
+      '<li><b>Observe</b>: noticing what is present — a sensation, a sound, an emotion — without putting words on it right away.</li>' +
+      '<li><b>Describe</b>: then putting factual words on it. “There is tension in my chest,” not “I am broken.”</li>' +
+      '<li><b>Participate</b>: when it is time, getting fully involved in what you are doing — the conversation, the walk, the task.</li>' +
+      '</ul></div>';
+    h += '<h2 class="sec">How to do it</h2>';
+    h += '<div class="card"><ul class="list">' +
+      '<li><b>Without judgement</b>: describing the facts, not “good” or “bad”. A judgement shows up? You notice it, that is all.</li>' +
+      '<li><b>One thing at a time</b>: when your mind wanders, coming back to the one thing at hand.</li>' +
+      '<li><b>Do what works</b>: effectiveness, not perfection. What helps, here, now?</li>' +
+      '</ul></div>';
+    h += minuteurHTML();
+    return h;
+  }
+
+  function vueTD() {
+    var h = '';
+    h += '<div class="card"><p class="small" style="margin:0">To <b>get through a crisis moment without making things worse</b>. These are survival skills: they do not solve everything — they let the wave pass, so you can choose afterwards.</p></div>';
+    h += '<h2 class="sec">Crisis skills</h2>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#f4e8ee;--qc:#7A2E4D">Crisis</span><h3>STOP</h3>'+ib('stop')+'</div>' +
+      '<ul class="list">' +
+      '<li><b>S</b> — Stop. Do nothing right away.</li>' +
+      '<li><b>T</b> — Take a step back (literally: change rooms, breathe).</li>' +
+      '<li><b>O</b> — Observe: what is happening inside, around you, what the options are.</li>' +
+      '<li><b>P</b> — Proceed mindfully: one effective gesture, not a perfect one.</li>' +
+      '</ul></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#f0ebf9;--qc:#6d4fa8">Body</span><h3>TIPP — bringing the body down fast</h3>'+ib('tipp')+'</div>' +
+      '<ul class="list">' +
+      '<li><b>T — Temperature</b>: cold water on the face or hands, a cold cloth. The body slows down.</li>' +
+      '<li><b>I — Intense exercise</b>: a brief burst (climbing stairs, 20 jumps).</li>' +
+      '<li><b>P — Paced breathing</b>: slow breathing — the out-breath longer than the in-breath.</li>' +
+      '<li><b>P — Progressive relaxation</b>: tense then release your muscles, one group at a time.</li>' +
+      '</ul></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#e6f1f8;--qc:#036798">Support</span><h3>ACCEPTS — healthy distractions</h3>'+ib('accepts')+'</div>' +
+      '<p class="line">Occupations in small doses, to get through the worst: Activities · Contributing · Comparisons (with pity? no — rather “where I was vs where I am”) · Opposite emotions · Pushing thoughts away · Soothing sensations · A step-by-step.</p>' +
+      '<ul class="list">' +
+      '<li><b>Activities</b>: doing a real something (cleaning, a walk, a game).</li>' +
+      '<li><b>Contributing</b>: helping someone, one small free gesture.</li>' +
+      '<li><b>Opposite emotions</b>: soft music when it is a storm.</li>' +
+      '<li><b>Sensations</b>: a hot shower, a blanket, a cup of tea — going through the body.</li>' +
+      '</ul></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#edf3fb;--qc:#7096d1">Soothing</span><h3>IMPROVE</h3>'+ib('improve')+'</div>' +
+      '<p class="line">Imagery (a safe place in your mind) · Meaning (giving meaning to the moment: “I am passing through, I do not live here”) · Absorption (an activity that takes all of you) · Relaxation · One thing at a time · A brief vacation (a real 10-minute break) · Encouragement (speaking to yourself like a tired child).</p></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#fbe9f1;--qc:#b8437e">Ground</span><h3>L\'acceptation radicale</h3>'+ib('rad')+'</div>' +
+      '<p class="line">Reality is what it is. Fighting a done deed adds suffering to pain. Radical acceptance is not loving or approving — it is stopping the fight against what has already happened, so you can act on what still can be.</p></div>';
+    h += '<h2 class="sec">My crisis plan</h2>';
+    h += '<div class="card"><p class="small muted" style="margin:0 0 4px">When it rises too high: what I do, in order. Write it while things are calm — so it is ready when needed.</p>' +
+      '<ul class="items" id="lCrise"></ul>' +
+      '<div class="addrow"><input type="text" id="inCrise" maxlength="240" placeholder="First step… (e.g. cold water, then a walk)"><button class="btn" id="btnCrise" type="button">Add</button></div></div>';
+    return h;
+  }
+
+  function vueRE() {
+    var h = '';
+    h += '<div class="card"><p class="small" style="margin:0">Understanding your emotions and <b>modulating</b> them — not controlling them. An emotion is not a problem: it is information. The goal: that it does not decide everything in your place.</p></div>';
+    h += '<h2 class="sec">Understanding</h2>';
+    h += '<div class="card"><ul class="list">' +
+      '<li><b>The event</b>: what happened, in facts?</li>' +
+      '<li><b>The interpretation</b>: what I told myself about it.</li>' +
+      '<li><b>The emotion</b>: naming it (fear, anger, shame, sadness…), with its intensity.</li>' +
+      '<li><b>The impulse</b>: what I wanted to do right away.</li>' +
+      '<li><b>The action</b>: what I did — and what followed.</li>' +
+      '</ul><p class="line" style="margin-top:10px">The emotion often follows the interpretation, not the facts. That is where there is room to move.</p></div>';
+    h += '<h2 class="sec">Checking and modulating</h2>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#e6f1f8;--qc:#036798">Test</span><h3>Check the facts</h3>'+ib('verif')+'</div>' +
+      '<p class="line">Does my emotion match the facts? If yes: listen to it and act. If not: it is real, but not useful as it stands — enter opposite action.</p></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#f4e8ee;--qc:#7A2E4D">Act</span><h3>Opposite action — gently</h3>'+ib('opp')+'</div>' +
+      '<ul class="list">' +
+      '<li><b>Fear</b> → moving closer, with one very small step.</li>' +
+      '<li><b>Sadness</b> → gently re-activating (going out, calling someone).</li>' +
+      '<li><b>Anger</b> → a gentle gesture, avoiding the automatic retort.</li>' +
+      '<li><b>Shame</b> → repairing if needed, otherwise talking to a safe person.</li>' +
+      '</ul><p class="line" style="margin-top:8px">Not forcing: doing the opposite of the impulse, kindly, like guiding a friend.</p></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#edf3fb;--qc:#7096d1">Prevent</span><h3>Reducing vulnerability</h3>'+ib('vuln')+'</div>' +
+      '<ul class="list">' +
+      '<li><b>A — Accumulate</b> positive experiences (one a day, real and small).</li>' +
+      '<li><b>B — Build mastery</b>: doing something within your reach, even tiny.</li>' +
+      '<li><b>C — Cope ahead</b>: rehearsing in your mind what you will do in the hard situation.</li>' +
+      '<li><b>PLEASE</b>: sleep, food, movement, health, sobriety — the body first.</li>' +
+      '</ul></div>';
+    h += '<h2 class="sec">My sheet — unmaking an emotion</h2>';
+    h += '<div class="card"><p class="small muted" style="margin:0 0 6px">Take an emotion that shook you recently. Just the facts — no case against yourself.</p>' +
+      '<div class="frm">' +
+      '<label for="fSit">The situation (facts)</label><input type="text" id="fSit" maxlength="300">' +
+      '<label for="fInt">My interpretation</label><input type="text" id="fInt" maxlength="300">' +
+      '<label for="fEmo">The emotion</label><input type="text" id="fEmo" maxlength="120" placeholder="e.g. anger">' +
+      '<label for="fItn">Intensity (0 to 10)</label><input type="number" id="fItn" min="0" max="10" value="5" style="max-width:7rem">' +
+      '<label for="fImp">The impulse</label><input type="text" id="fImp" maxlength="300">' +
+      '<label for="fUti">What is most useful, right now?</label><input type="text" id="fUti" maxlength="300">' +
+      '</div>' +
+      '<div class="addrow"><button class="btn" id="btnEmo" type="button">Add the sheet</button></div>' +
+      '<ul class="items" id="lEmo"></ul></div>';
+    return h;
+  }
+
+  function vueEI() {
+    var h = '';
+    h += '<div class="card"><p class="small" style="margin:0"><b>Asking, saying no, setting a boundary</b> — while keeping the relationship, and self-respect. Three tools: one for the goal (DEAR MAN), one for the bond (GIVE), one for yourself (FAST).</p></div>';
+    h += '<h2 class="sec">The tools</h2>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#e6f1f8;--qc:#036798">Goal</span><h3>DEAR MAN — asking or refusing</h3>'+ib('dear')+'</div>' +
+      '<ul class="list">' +
+      '<li><b>D</b>escribe the facts, without blaming.</li>' +
+      '<li><b>E</b>xpress your feelings, using “I”.</li>' +
+      '<li><b>A</b>ssert clearly the request — or the refusal.</li>' +
+      '<li><b>R</b>einforce: what the other gains from it.</li>' +
+      '<li><b>M</b>indful — staying focused on the goal, without scattering.</li>' +
+      '<li><b>A</b>ppear confident: calm tone, gaze, posture.</li>' +
+      '<li><b>N</b>egotiate: leaving a door open, hearing the other\'s point.</li>' +
+      '</ul></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#f4e8ee;--qc:#7A2E4D">Bond</span><h3>GIVE — keeping the relationship</h3>'+ib('give')+'</div>' +
+      '<p class="line"><b>G</b>entle (no attacks) · <b>I</b>nterested — really listening · <b>V</b>alidate — showing you hear · <b>E</b>asy manner, without rigidity.</p></div>';
+    h += '<div class="card"><div class="skillhead"><span class="tag" style="--qb:#fbe9f1;--qc:#b8437e">Self</span><h3>FAST — keeping self-respect</h3>'+ib('fast')+'</div>' +
+      '<p class="line"><b>F</b>air — just, equitable · <b>A</b> — no excessive excuses (over-explaining does not help) · <b>S</b>tick to values · <b>T</b>ruthful — honest, without exaggerating.</p></div>';
+    h += '<h2 class="sec">Preparing a conversation</h2>';
+    h += '<div class="card"><p class="small muted" style="margin:0 0 6px">Something to ask for (or refuse)? Prepare it: write a few words per line — no need for perfect sentences.</p>' +
+      '<div class="frm">' +
+      '<label for="cD">Describe — the facts</label><input type="text" id="cD" maxlength="300">' +
+      '<label for="cE">Express — your feelings</label><input type="text" id="cE" maxlength="300">' +
+      '<label for="cA">Assert — the request or refusal</label><input type="text" id="cA" maxlength="300">' +
+      '<label for="cR">Reinforce — the benefit for the other</label><input type="text" id="cR" maxlength="300">' +
+      '<label for="cM">Stay focused — on the goal</label><input type="text" id="cM" maxlength="300">' +
+      '<label for="cAc">Confidence — how you carry yourself</label><input type="text" id="cAc" maxlength="300">' +
+      '<label for="cN">Negotiate — your open door</label><input type="text" id="cN" maxlength="300">' +
+      '</div>' +
+      '<div class="addrow"><button class="btn" id="btnConvo" type="button">Add the preparation</button></div>' +
+      '<ul class="items" id="lConvo"></ul></div>';
+    return h;
+  }
+
+  function vueDI() {
+    var h = '';
+    h += '<div class="card"><p class="small" style="margin:0"><b>Two things that seem to contradict each other can be true at the same time.</b> This is not indecision: it is reality, which holds several truths at once. Dialectics is holding both — without having to decide.</p><div class="btnrow" style="margin-top:10px">'+ib('dial')+'</div></div>';
+    h += '<h2 class="sec">The reflex: “but” becomes “AND”</h2>';
+    h += '<div class="card"><p class="line">“But” erases one of the two things. “And” lets both coexist. Try it:</p>' +
+      '<div class="addrow"><input type="text" id="inMais" maxlength="300" placeholder="e.g. I want to move forward, but I am afraid"><button class="btn" id="btnMais" type="button">Transform</button></div>' +
+      '<p class="line" id="outMais" style="margin-top:12px;color:#036798;font-weight:650"></p></div>';
+    h += '<h2 class="sec">Examples to practise</h2>';
+    h += '<div class="card"><p class="small muted" style="margin:0 0 8px">All true. You can adapt them to your own words:</p>' +
+      '<ul class="list">' +
+      '<li>I am doing my best <b>AND</b> I can still learn.</li>' +
+      '<li>I am strong <b>AND</b> I need help.</li>' +
+      '<li>I love this person <b>AND</b> I am angry with them.</li>' +
+      '<li>It is okay to be where I am <b>AND</b> I want to move forward.</li>' +
+      '<li>I understand why I am afraid <b>AND</b> I can still go gently.</li>' +
+      '<li>I want to be close <b>AND</b> I need my space.</li>' +
+      '</ul></div>';
+    h += '<h2 class="sec">My two true things</h2>';
+    h += '<div class="card"><p class="small muted" style="margin:0 0 6px">One thing… AND another. Neither has to win.</p>' +
+      '<div class="addrow"><input type="text" id="inDA" maxlength="240" placeholder="One true thing…"></div>' +
+      '<div class="addrow"><input type="text" id="inDB" maxlength="240" placeholder="…AND another, that seems to contradict it."></div>' +
+      '<div class="addrow"><button class="btn" id="btnDial" type="button">Add to my sentences</button></div>' +
+      '<ul class="items" id="lDial"></ul></div>';
+    h += '<h2 class="sec">Classic tensions — it is normal to feel both</h2>';
+    h += '<div class="card"><ul class="list">' +
+      '<li><b>Accepting ↔ Changing</b>: seeing things as they are, and wanting to move them.</li>' +
+      '<li><b>Taking care of yourself ↔ taking care of others</b>: both matter — not in perfect alternation.</li>' +
+      '<li><b>Asking ↔ letting go</b>: expressing your need, and leaving the other free to answer.</li>' +
+      '<li><b>Holding on ↔ resting</b>: persevering, and stopping when the body asks.</li>' +
+      '</ul>' +
+      '<p class="line" style="margin-top:10px">If you feel you <b>must</b> decide absolutely, it is often a sign that one of the two voices is afraid. Come back to your breath: both can stay.</p></div>';
+    return h;
+  }
+
+  // ---------- editable lists ----------
+  function rendreListe(items, mapFn, delFn, elId) {
+    var ul = document.getElementById(elId);
+    if (!ul) return;
+    ul.textContent = "";
+    items.forEach(function (it, i) {
+      var li = document.createElement("li");
+      var body = document.createElement("div");
+      body.className = "body";
+      body.innerHTML = mapFn(it);
+      var x = document.createElement("button");
+      x.type = "button"; x.className = "xmini"; x.textContent = "✕"; x.title = "Remove";
+      x.addEventListener("click", function () { delFn(i); });
+      li.appendChild(body); li.appendChild(x);
+      ul.appendChild(li);
+    });
+  }
+
+  function brancher() {
+    if (onglet === "pc") { wireMinuteur(); }
+
+    if (onglet === "td") {
+      rendreListe(etat.crise, function (s) { return esc(s); }, function (i) { etat.crise.splice(i, 1); sauver(); rendre(); }, "lCrise");
+      var btn = document.getElementById("btnCrise");
+      var inp = document.getElementById("inCrise");
+      function ajouter() {
+        var v = inp.value.replace(/\s+/g, " ").trim();
+        if (!v) { toast("Write something first."); return; }
+        if (etat.crise.length >= 60) { toast("The list is full."); return; }
+        etat.crise.push(v.slice(0, 240)); sauver(); rendre();
+        toast("Added to the plan.");
+      }
+      btn.addEventListener("click", ajouter);
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); ajouter(); } });
+    }
+
+    if (onglet === "re") {
+      var sb = document.getElementById("btnEmo");
+      sb.addEventListener("click", function () {
+        var sit = document.getElementById("fSit").value.trim();
+        if (!sit) { toast("Start with the situation."); return; }
+        etat.emotions.unshift({
+          id: uid(), sit: sit.slice(0, 300),
+          interp: document.getElementById("fInt").value.trim().slice(0, 300),
+          emo: document.getElementById("fEmo").value.trim().slice(0, 120),
+          inten: Math.max(0, Math.min(10, parseInt(document.getElementById("fItn").value, 10) || 0)),
+          impuls: document.getElementById("fImp").value.trim().slice(0, 300),
+          utile: document.getElementById("fUti").value.trim().slice(0, 300)
+        });
+        if (etat.emotions.length > 100) etat.emotions = etat.emotions.slice(0, 100);
+        sauver(); rendre(); toast("Sheet added.");
+      });
+      rendreListe(etat.emotions, function (f) {
+        var s = '<span class="t">' + esc(f.emo || "Emotion") + (f.inten ? " (" + f.inten + "/10)" : "") + '</span>';
+        if (f.sit) s += '<div class="s">Situation: ' + esc(f.sit) + '</div>';
+        if (f.interp) s += '<div class="s">Interpretation: ' + esc(f.interp) + '</div>';
+        if (f.impuls) s += '<div class="s">Impulse: ' + esc(f.impuls) + '</div>';
+        if (f.utile) s += '<div class="s">Useful: ' + esc(f.utile) + '</div>';
+        return s;
+      }, function (i) { etat.emotions.splice(i, 1); sauver(); rendre(); }, "lEmo");
+    }
+
+    if (onglet === "ei") {
+      var cb = document.getElementById("btnConvo");
+      cb.addEventListener("click", function () {
+        var a = document.getElementById("cA").value.trim();
+        var d0 = document.getElementById("cD").value.trim();
+        if (!a && !d0) { toast("Write at least the facts or the request."); return; }
+        etat.convos.unshift({
+          id: uid(),
+          d: d0.slice(0, 300),
+          e: document.getElementById("cE").value.trim().slice(0, 300),
+          a: a.slice(0, 300),
+          r: document.getElementById("cR").value.trim().slice(0, 300),
+          m: document.getElementById("cM").value.trim().slice(0, 300),
+          ac: document.getElementById("cAc").value.trim().slice(0, 300),
+          n: document.getElementById("cN").value.trim().slice(0, 300)
+        });
+        if (etat.convos.length > 100) etat.convos = etat.convos.slice(0, 100);
+        sauver(); rendre(); toast("Preparation added.");
+      });
+      rendreListe(etat.convos, function (f) {
+        var s = '<span class="t">' + esc(f.a || f.d) + '</span>';
+        [["Describe", f.d], ["Express", f.e], ["Assert", f.a], ["Reinforce", f.r], ["Focused", f.m], ["Confidence", f.ac], ["Negotiate", f.n]].forEach(function (p) {
+          if (p[1]) s += '<div class="s">' + esc(p[0]) + ' : ' + esc(p[1]) + '</div>';
+        });
+        return s;
+      }, function (i) { etat.convos.splice(i, 1); sauver(); rendre(); }, "lConvo");
+    }
+
+    if (onglet === "di") {
+      var mb = document.getElementById("btnMais");
+      mb.addEventListener("click", function () {
+        var v = document.getElementById("inMais").value.trim();
+        var out = document.getElementById("outMais");
+        if (!v) { out.textContent = ""; toast("Write a sentence with “but”."); return; }
+        if (/[,;]?\s*mais\s+/i.test(v)) {
+          out.textContent = "→ " + v.replace(/[,;]?\s*mais\s+/i, " ET ");
+          toast("There — both hold.");
+        } else if (/\bet\b/i.test(v)) {
+          out.textContent = "→ " + v + "  (already an AND — perfect)";
+        } else {
+          out.textContent = "There is no “but” here — add the second thing, or write it with AND.";
+        }
+      });
+      var db = document.getElementById("btnDial");
+      function ajouterDial() {
+        var a = document.getElementById("inDA").value.trim();
+        var b = document.getElementById("inDB").value.trim();
+        if (!a || !b) { toast("Both sides first."); return; }
+        etat.dialectiques.unshift({ id: uid(), a: a.slice(0, 240), b: b.slice(0, 240) });
+        if (etat.dialectiques.length > 100) etat.dialectiques = etat.dialectiques.slice(0, 100);
+        sauver(); rendre(); toast("Added. Both are true.");
+      }
+      db.addEventListener("click", ajouterDial);
+      rendreListe(etat.dialectiques, function (d) { return esc(d.a) + ' <b>ET</b> ' + esc(d.b); },
+        function (i) { etat.dialectiques.splice(i, 1); sauver(); rendre(); }, "lDial");
+    }
+  }
+
+  function rendre() {
+    rendreTabs();
+    if (onglet === "pc") elVue.innerHTML = vuePC();
+    else if (onglet === "td") elVue.innerHTML = vueTD();
+    else if (onglet === "re") elVue.innerHTML = vueRE();
+    else if (onglet === "ei") elVue.innerHTML = vueEI();
+    else elVue.innerHTML = vueDI();
+    brancher();
+    if (!stockageOk) {
+      elVue.insertAdjacentHTML("afterbegin", '<div class="card small muted">This browser does not allow saving — keep the tab open, or open the file in Chrome, Edge or Safari.</div>');
+    }
+  }
+
+  // ---------- settings ----------
+  var elVoile = document.getElementById("voile");
+  var elPanneau = document.getElementById("panneau");
+  function fermerPanneau() { elVoile.hidden = true; elPanneau.hidden = true; }
+  elVoile.addEventListener("click", fermerPanneau);
+
+  function telecharger(nom, contenu, type) {
+    var blob = new Blob([contenu], { type: type + ";charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = nom;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+
+  function exporterTxt() {
+    var l = [];
+    l.push("DBT skills — my reflections");
+    l.push("");
+    if (etat.crise.length) {
+      l.push("MY CRISIS PLAN:");
+      etat.crise.forEach(function (x, i) { l.push("  " + (i + 1) + ". " + x); });
+      l.push("");
+    }
+    if (etat.emotions.length) {
+      l.push("MY SHEETS — unmaking an emotion:");
+      etat.emotions.forEach(function (f) {
+        l.push("  • " + (f.emo || "Émotion") + (f.inten ? " (" + f.inten + "/10)" : ""));
+        if (f.sit) l.push("    Situation: " + f.sit);
+        if (f.interp) l.push("    Interpretation: " + f.interp);
+        if (f.impuls) l.push("    Impulse: " + f.impuls);
+        if (f.utile) l.push("    Useful: " + f.utile);
+      });
+      l.push("");
+    }
+    if (etat.convos.length) {
+      l.push("MY PREPARED CONVERSATIONS:");
+      etat.convos.forEach(function (f) {
+        l.push("  • " + (f.a || f.d));
+        [["Describe", f.d], ["Express", f.e], ["Assert", f.a], ["Reinforce", f.r], ["Focused", f.m], ["Confidence", f.ac], ["Negotiate", f.n]].forEach(function (p) {
+          if (p[1]) l.push("    " + p[0] + " : " + p[1]);
+        });
+      });
+      l.push("");
+    }
+    if (etat.dialectiques.length) {
+      l.push("MY TWO TRUE THINGS:");
+      etat.dialectiques.forEach(function (d) { l.push("  • " + d.a + " ET " + d.b); });
+      l.push("");
+    }
+    telecharger("dbt-competences.txt", l.join("\n"), "text/plain");
+  }
+
+  document.getElementById("btnReglages").addEventListener("click", function () {
+    elPanneau.innerHTML =
+      '<h2>Settings</h2>' +
+      '<button class="btn clair large" id="btnTxt" type="button">Export my reflections (readable text)</button>' +
+      '<button class="btn clair large" id="btnJson" type="button">Save everything (.json file)</button>' +
+      '<label class="btn clair large importlabel">Import a backup (.json)<input type="file" id="inpImport" accept=".json,application/json"></label>' +
+      '<button class="btn danger large" id="btnEffacer" type="button">Erase all my reflections</button>' +
+      '<button class="btn large" id="btnFermer" type="button">Close</button>' +
+      '<p class="small muted" style="margin:14px 0 0">Everything stays on this device. Your reflections can be reviewed during a brief intervention: <a href="https://authentiquesexo.ca" target="_blank" rel="noopener">authentiquesexo.ca</a>.</p>';
+    elVoile.hidden = false; elPanneau.hidden = false;
+    document.getElementById("btnFermer").addEventListener("click", fermerPanneau);
+    document.getElementById("btnTxt").addEventListener("click", exporterTxt);
+    document.getElementById("btnJson").addEventListener("click", function () {
+      telecharger("dbt-sauvegarde.json", JSON.stringify(etat, null, 2), "application/json");
+    });
+    var effConfirme = false;
+    var elEff = document.getElementById("btnEffacer");
+    elEff.addEventListener("click", function () {
+      if (!effConfirme) {
+        effConfirme = true;
+        elEff.textContent = "Click again to really erase";
+        setTimeout(function () { effConfirme = false; elEff.textContent = "Erase all my reflections"; }, 5000);
+        return;
+      }
+      etat = { v: 1, crise: [], emotions: [], convos: [], dialectiques: [] };
+      sauver(); rendre(); fermerPanneau(); toast("Everything is erased.");
+    });
+    var inp = document.getElementById("inpImport");
+    inp.addEventListener("change", function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        try {
+          var d = JSON.parse(String(r.result));
+          if (!d || typeof d !== "object") throw new Error("format");
+          if (!Array.isArray(d.crise) && !Array.isArray(d.emotions) && !Array.isArray(d.convos) && !Array.isArray(d.dialectiques)) throw new Error("format");
+          etat = { v: 1, crise: [], emotions: [], convos: [], dialectiques: [] };
+          try { window.localStorage.setItem(CLE, JSON.stringify(d)); } catch (e) { }
+          charger(); rendre(); fermerPanneau(); toast("Backup imported.");
+        } catch (err) { toast("This file does not look like a backup."); }
+      };
+      r.readAsText(f);
+      this.value = "";
+    });
+  });
+
+  document.getElementById("btnImprimer").addEventListener("click", function () { window.print(); });
+
+  charger();
+  rendre();
+})();
+</script>
+</body>
+</html>

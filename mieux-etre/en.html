@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mieux-être — gentle questions for your well-being</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #f7f4ef;
+    color: #2c3642;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+  .page { max-width: 560px; margin: 0 auto; padding: 26px 16px 56px; }
+  .entete { text-align: center; margin-bottom: 14px; position: relative; }
+  .entete h1 { font-size: 29px; margin: 0 0 6px; font-weight: 600; }
+  .soust { color: #8a939d; font-size: 15px; margin: 0; }
+  #btnReglages {
+    position: absolute; right: 0; top: 2px;
+    background: none; border: none; color: #a3acb6;
+    font-size: 15px; font-family: inherit; cursor: pointer; padding: 4px 2px;
+  }
+  #btnReglages:hover { color: #2c3642; }
+
+  .choix { display: block; text-align: center; margin: 0 0 6px; }
+  .choix span { display: block; font-size: 12.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #a3acb6; margin-bottom: 4px; }
+  .choix select {
+    font-family: inherit; font-size: 15.5px; color: #2c3642; text-align: center; text-align-last: center;
+    border: 1.5px solid #e6e1d9; border-radius: 12px; padding: 9px 12px; background: #fff; max-width: 100%;
+    accent-color: #036798;
+  }
+
+  .jours { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 14px 0 20px; }
+  .jours.compact { gap: 6px; }
+  .pastille {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1.5px solid #e6e1d9; background: #ffffff; color: #9aa4ae;
+    font-size: 16px; font-family: inherit; cursor: pointer; padding: 0;
+    --j: #036798; --js: #e6f1f8;
+  }
+  .jours.compact .pastille { width: 38px; height: 38px; font-size: 14.5px; }
+  .pastille.rempli { background: var(--js); border-color: var(--j); color: var(--j); font-weight: 600; }
+  .pastille.active { background: var(--j); border-color: var(--j); color: #fff; font-weight: 600; }
+
+  .carte {
+    background: #ffffff; border-radius: 20px; padding: 24px 20px 18px; position: relative;
+    border-left: 4px solid var(--j, #036798);
+    box-shadow: 0 10px 30px rgba(46, 38, 28, 0.07);
+  }
+  .jourlabel { color: var(--j, #036798); font-size: 13px; letter-spacing: 1.6px; text-transform: uppercase; margin: 0 0 6px; font-weight: 600; }
+  .volet { color: var(--j, #036798); font-size: 12.5px; letter-spacing: 1.2px; text-transform: uppercase; margin: 0 0 10px; font-weight: 700; opacity: .85; }
+  .btnAudio {
+    position: absolute; top: 14px; right: 14px;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    border: 1.5px solid #e7e2da; background: #fff; color: #7b8693;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+  }
+  .btnAudio:hover { border-color: #036798; color: #036798; }
+  .btnAudio.on { background: #036798; border-color: #036798; color: #fff; }
+  .btnInfo {
+    position: absolute; top: 14px; right: 62px;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    border: 1.5px solid #e7e2da; background: #fff; color: #7b8693;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+  }
+  .btnInfo:hover { border-color: #036798; color: #036798; }
+  .infVolet { font-size: .95rem; margin: 0 0 10px; color: #2c3642; }
+  .infVolet b { color: #036798; }
+
+  .intro { color: #8f8896; font-size: 14.5px; margin: 0 0 12px; padding-right: 44px; }
+  .question { font-size: 21px; line-height: 1.45; font-weight: 600; margin: 0 0 16px; padding-right: 8px; }
+  textarea {
+    width: 100%; min-height: 132px; resize: vertical;
+    border: 1.5px solid #e7e2da; border-radius: 14px; padding: 12px 14px;
+    font-family: inherit; font-size: 16.5px; line-height: 1.5; color: #2c3642;
+    background: #fff;
+  }
+  textarea:focus { outline: none; border-color: #036798; }
+  .aide { color: #a3acb6; font-size: 13.5px; margin: 10px 2px 0; }
+  .bas { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; }
+  .bouton {
+    background: linear-gradient(135deg,#1389c1,#036798); color: #fff; border: none; border-radius: 12px;
+    padding: 13px 16px; font-size: 15.5px; font-family: inherit; cursor: pointer;
+  }
+  .bouton:hover:not(:disabled) { background: linear-gradient(135deg,#0d6fa2,#02567f); }
+  .bouton:disabled { background: #e8e4dc; color: #ada79d; cursor: default; }
+  .bouton.clair { background: #dceafa; color: #036798; }
+  .bouton.danger { background: #fbe9f1; color: #a03a6b; }
+  .bouton.large { display: block; width: 100%; text-align: center; margin: 0 0 10px; }
+  .toutnote { text-align: center; color: #5d8a6e; font-size: 15px; margin: 18px 8px 0; }
+  .mention { text-align: center; color: #8a939d; font-size: 13.5px; margin: 22px 8px 0; }
+  .mention a { color: #036798; }
+
+  .voile { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(40, 34, 28, 0.35); z-index: 10; }
+  .panneau {
+    position: fixed; left: 50%; bottom: 0; transform: translateX(-50%);
+    width: 100%; max-width: 560px; z-index: 11;
+    background: #fffdfa; border-radius: 20px 20px 0 0;
+    padding: 20px 18px 24px;
+    box-shadow: 0 -12px 40px rgba(46, 38, 28, 0.18);
+  }
+  .panneau h2 { margin: 0 0 14px; font-size: 19px; }
+  .panneau.resume { max-height: 88vh; overflow: auto; }
+  .importlabel { cursor: pointer; }
+  .importlabel input { display: none; }
+
+  .rbloc { border-left: 3px solid var(--t, #036798); padding: 4px 0 4px 12px; margin: 0 0 14px; cursor: pointer; border-radius: 2px; }
+  .rbloc:hover { background: #f7f4ef; }
+  .rbloc .rnum { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--t, #036798); font-weight: 600; }
+  .rbloc .rq { font-size: 13.5px; color: #8f8896; margin: 2px 0 6px; }
+  .rbloc .ra { font-size: 15.5px; color: #2c3642; white-space: pre-wrap; margin: 0; }
+  .rbloc .ra.vide { color: #a3acb6; font-style: italic; }
+  .vsep { color: #8a939d; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 700; margin: 18px 0 8px; }
+
+  .archbox { margin-top: 24px; }
+  .archbox h3 { font-size: 12.5px; letter-spacing: 1.4px; text-transform: uppercase; color: #a3acb6; margin: 0 0 10px; text-align: center; font-weight: 600; }
+  .archrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #fff; border: 1.5px solid #ece7df; border-radius: 14px; padding: 10px 14px; margin: 0 0 8px; }
+  .archrow .ad { font-size: 15px; color: #2c3642; }
+  .archrow .an { font-size: 13px; color: #a3acb6; }
+  .archrow button { background: #dceafa; color: #036798; border: none; border-radius: 10px; padding: 7px 12px; font-family: inherit; font-size: 14px; cursor: pointer; flex: none; }
+  .archrow button:hover { background: #cfe0f3; }
+
+  .outbar {
+    max-width: 560px; margin: 0 auto; padding: 12px 16px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: .85rem;
+  }
+  .outbar a { color: #036798; text-decoration: none; font-weight: 600; }
+  .outbar a:hover { text-decoration: underline; }
+  .outbar .langsw { color: #a3acb6; }
+  .outbar .langsw b { color: #b8437e; }
+  .outbar .langsw a { margin-left: 7px; }
+</style>
+</head>
+<body>
+<div class="outbar"><a href="../en.html">← All tools</a><span class="langsw"><a href="index.html">FR</a><b>EN</b></span></div>
+<div class="page">
+  <header class="entete">
+    <h1>Mieux-être</h1>
+    <p class="soust">Gentle questions, one a day, at your own pace, without pressure.</p>
+    <button id="btnReglages" type="button">Settings</button>
+  </header>
+
+  <label class="choix"><span>Parcours</span>
+    <select id="selParcours" aria-label="Choose a journey"></select>
+  </label>
+
+  <nav class="jours" id="navJours" aria-label="Choose a day"></nav>
+
+  <section class="carte" id="carte">
+    <button class="btnAudio" id="btnAudio" type="button" aria-pressed="false" title="Listen to the question">
+      <svg id="icoAudio" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+    </button>
+    <button class="btnInfo" id="btnInfo" type="button" title="Learn more">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg>
+    </button>
+    <p class="jourlabel" id="jourLabel"></p>
+    <p class="volet" id="volet" hidden></p>
+    <p class="intro" id="intro"></p>
+    <h2 class="question" id="question"></h2>
+    <textarea id="reponse" placeholder="Write here, for yourself."></textarea>
+    <p class="aide">What you write saves itself, on this device only — nothing leaves here.</p>
+    <div class="bas">
+      <button class="bouton clair" id="btnPrec" type="button">← Previous day</button>
+      <button class="bouton" id="btnSuiv" type="button">Next day →</button>
+    </div>
+  </section>
+
+  <p class="toutnote" id="toutnote" hidden>Your journey is complete — your answers are waiting whenever you want to read them again.</p>
+  <button class="bouton large" id="btnResume" type="button" hidden style="margin-top:12px">See my journey summary</button>
+  <div id="archivesBox"></div>
+  <p class="mention">A tool from Authentique sexologie. It is meant to be used on your own and does not replace a consultation or follow-up with a sexologist. You can go over your answers during a brief intervention: <a href="https://authentiquesexo.ca" target="_blank" rel="noopener">authentiquesexo.ca</a>.</p>
+</div>
+
+<div class="voile" id="voile" hidden></div>
+<section class="panneau" id="panneau" hidden>
+  <h2>Settings</h2>
+  <button class="bouton clair large" id="btnTxt" type="button">Export my answers (readable text)</button>
+  <button class="bouton clair large" id="btnJson" type="button">Save everything (.json file)</button>
+  <label class="bouton clair large importlabel">Import a backup (.json)<input type="file" id="inpImport" accept=".json,application/json"></label>
+  <button class="bouton danger large" id="btnEffacer" type="button">Erase all my answers</button>
+  <button class="bouton large" id="btnFermer" type="button">Close</button>
+</section>
+
+<div class="voile" id="voileResume" hidden></div>
+<section class="panneau resume" id="resume" hidden>
+  <h2>Your journey</h2>
+  <p class="intro" style="margin-top:0">Here is what you have sown — your words, in order. Tap a day to read it again.</p>
+  <div id="resumeCorps"></div>
+  <button class="bouton large" id="btnRecommencer" type="button" style="margin-top:14px">Start this journey again</button>
+  <button class="bouton clair large" id="btnExporterResume" type="button">Export my summary (text)</button>
+  <button class="bouton large" id="btnFermerResume" type="button">Close</button>
+</section>
+
+<div class="voile" id="voileArch" hidden></div>
+<section class="panneau resume" id="archPan" hidden>
+  <h2 id="archTitre">Journey completed</h2>
+  <div id="archCorps"></div>
+  <button class="bouton large" id="btnFermerArch" type="button">Close</button>
+</section>
+
+<div class="voile" id="voileInfo" hidden></div>
+<section class="panneau resume" id="infoPan" hidden>
+  <h2 id="infoTitre">The concept</h2>
+  <div id="infoCorps"></div>
+  <button class="bouton large" id="btnFermerInfo" type="button">Close</button>
+</section>
+
+<script>
+(function () {
+  "use strict";
+
+  var PARCOURS = [
+    {
+      id: "auto",
+      titre: "Self-compassion · 7 days",
+      desc: "Three parts: kindness, common humanity, mindful presence.",
+      VOL: ["Kindness", "Kindness", "Kindness", "Common humanity", "Common humanity", "Mindful presence", "Mindful presence"],
+      Q: [
+        "If someone you love were living exactly what you are living right now, what would you tell them?",
+        "What phrases do you tell yourself that you would never say to someone else — and what would the gentle version be?",
+        "What small thing today would take care of you? Simple, and actually doable.",
+        "What are you going through right now that others are going through too, without showing it?",
+        "Who could you reach out to? And what makes that hard?",
+        "Without changing anything: what is here, right now? What weighs, what breathes.",
+        "How do you want to speak to yourself from now on? What do you want to keep from these seven days?"
+      ],
+      I: [
+        "We often judge others more gently than we judge ourselves. This time, borrow that voice for yourself.",
+        "Write the harsh sentence if it comes, then its version a friend would tell you. That is the voice we want to keep.",
+        "Not a big program — a gesture. Tiny attentions hold better than big promises.",
+        "What is heavy is often more shared than we think. Writing it can take away a bit of loneliness.",
+        "Asking is a strength, not a confession. Write the name down, to keep it in mind.",
+        "We fix nothing here — we watch. Mindful presence is noticing the waves without being carried away.",
+        "Last question. Keep what does you good — and let the rest go, without guilt."
+      ]
+    },
+    {
+      id: "trois",
+      titre: "Three weeks for yourself · 21 days",
+      desc: "Looking, speaking kindly to yourself, moving forward.",
+      Q: [
+        "Let's start wide: what takes up the most space in your head these days?",
+        "What is going well right now — even a small thing?",
+        "What is draining you the most this week?",
+        "What does your perfect, very simple day look like?",
+        "What are you carrying for others right now?",
+        "What would you like someone to say to you these days?",
+        "First week done. What do you notice as you read back?",
+        "What sentence do you tell yourself these days that you would never say to someone close?",
+        "When did you speak harshly to yourself this week? What happened just before?",
+        "What would you say to a friend living exactly what you are living?",
+        "What strength helped you recently that you rarely give yourself credit for?",
+        "What good thing would someone who loves you say about you?",
+        "What would be gentler to tell yourself about the same thing?",
+        "How do you want to speak to yourself from now on? Write your sentence.",
+        "What do you need to let go of, gently, without drama?",
+        "What small thing would you do if you put yourself first once?",
+        "What has changed since the beginning of the journey, even imperceptibly?",
+        "Who would you ask for help if it were easy? What makes it hard?",
+        "What simple promise do you want to make to yourself, one you can keep?",
+        "What do you want to keep from these three weeks?",
+        "Last day. What would you say to the person who started this journey three weeks ago?"
+      ],
+      I: [
+        "No need to sort — put down what is there, in a jumble. That is the first step.",
+        "We also look at what holds. The gentle things matter as much as the rest.",
+        "Naming the fatigue is already starting to put it in its rightful place.",
+        "Not a vacation — a real ordinary day that would feel good. Use it as a compass.",
+        "We often carry more than we think. It is not a reproach — just an observation.",
+        "The sentence you are waiting for from a loved one — write it. It says what you need.",
+        "Gently — no harsh review. Just what you see.",
+        "Recognize it without defending it. It is not the truth — just a habit.",
+        "Harshness often shows up when we are tired, overwhelmed, or hurt. Look at the context, not just the sentence.",
+        "Write it for real, addressed to 'you'. Then read it again thinking it is for you too.",
+        "Humility sometimes hides real strengths. Name one, without shrinking it.",
+        "Borrow their eyes for a moment. What do they see that you no longer see?",
+        "Same observation, another voice. Find the version that helps instead of punishing.",
+        "A short sentence, easy to remember. It will be your reminder for the coming days.",
+        "An expectation, a guilt, one project too many? What we let go frees up space.",
+        "Small and true. Offer it to yourself as an experiment, not an obligation.",
+        "Real changes start small. Look closely.",
+        "Asking is a strength, not a confession. Write the name down, to keep it in mind.",
+        "Just one. One you can keep even in a bad week.",
+        "One thing to keep, one thing to leave. That is enough.",
+        "They kept going. Tell them something true — and keep it somewhere you will see it again."
+      ]
+    },
+    {
+      id: "conf",
+      titre: "Confidence · 7 days",
+      desc: "Finding your footing again.",
+      Q: [
+        "What are you succeeding at these days that you downplay?",
+        "When did you feel in your place recently?",
+        "What do you stop yourself from doing, for fear of others' eyes?",
+        "What proof do you have that you can do difficult things?",
+        "What compliment or success did you wave away?",
+        "If confidence were a step, not a state — what would the next step be?",
+        "How do you want to feed your confidence, gently, in the coming days?"
+      ],
+      I: [
+        "We quickly see what is missing, less what works. Look at what works.",
+        "A moment of rightness, small or big. It says something about your strengths.",
+        "Name the fear and the wish, side by side. Which deserves more room?",
+        "Not a slogan — a real proof, with a date if possible. You have more than one.",
+        "Receive it for real, for the time it takes to write it.",
+        "No need to be sure. Just curious and moving.",
+        "A tiny, regular practice is worth more than a grand vow."
+      ]
+    },
+    {
+      id: "cole",
+      titre: "Anger · 7 days",
+      desc: "Listening to what it protects.",
+      Q: [
+        "What are you angry about right now? Write it unfiltered.",
+        "What lit the fuse last time?",
+        "What is your anger trying to protect?",
+        "How does anger show up in you — inside, outside, or stuck?",
+        "What would help you come back down, a real trick that works for you?",
+        "What could you say calmly, once the wave has passed?",
+        "How do you want to take care of your anger, from now on?"
+      ],
+      I: [
+        "Anger often shows up to protect something important. Listen to what it defends.",
+        "Look for the drop that spilled it — often tiny, often meaningful.",
+        "A boundary, a value, a fatigue? Behind anger there is often a request.",
+        "There is no right answer. Just your usual rhythm, to recognize.",
+        "A walk, a shower, music, silence, writing? Note what helps, to remember it at the right time.",
+        "The sentence that comes after — the one that sets the boundary without breaking the bond.",
+        "It is precious information, not an enemy. To listen to, not to smother."
+      ]
+    },
+    {
+      id: "deui",
+      titre: "Grief and transitions · 7 days",
+      desc: "Walking through transitions.",
+      Q: [
+        "What has changed in your life recently — whether you wanted it or not?",
+        "What do you need most right now: to talk, to rest, or to be left in peace?",
+        "What is hard to say, that you carry alone?",
+        "What memory keeps coming back? Describe it as it comes.",
+        "What helps you get through the heavier days?",
+        "What would you like to do to take care of yourself this week?",
+        "What do you want to keep alive — from the person, the period, what you have learned?"
+      ],
+      I: [
+        "Transitions matter, even wanted ones: something is left behind every beginning.",
+        "Not everyone wants the same thing in hard passages. You — what do you want?",
+        "No obligation to share it — but writing it here already takes it a little out of you.",
+        "Let it come without sorting. Memories that return ask to be looked at.",
+        "A ritual, a person, a walk, a coffee? Small anchors matter too.",
+        "Something doable, even in a hard week.",
+        "Write it for real. What we keep in writing sometimes changes the way we move forward."
+      ]
+    },
+    {
+      id: "joie",
+      titre: "Joy · 7 days",
+      desc: "Making room for good things.",
+      Q: [
+        "When did you feel real joy last time? Tell it like you are there again.",
+        "What almost certainly makes you smile?",
+        "Who do you laugh with most easily?",
+        "What gave you joy as a child? Does it still exist in your week?",
+        "If you had a free hour tomorrow, nothing to achieve — what would you do just for pleasure?",
+        "What was good this week, even just one thing?",
+        "How do you want to make room for joy in the coming days?"
+      ],
+      I: [
+        "No need for a big occasion — real joys are often discreet. Relive it for a moment.",
+        "A face, a song, a little habit? They are matches: keep them within reach.",
+        "Joy multiplies when shared. Think of those people — and when you last saw them.",
+        "Often, the joy from before comes down to little. See if you can make room for it again.",
+        "Not useful, not productive: pleasant. Write what comes up first.",
+        "We let the good pass faster than the hard. This time, linger on it.",
+        "A very small invitation to yourself. Joys are cultivated like everything else."
+      ]
+    }
+  ];
+  var INFOS = {
+    auto: {
+      t: "Self-compassion",
+      p: [
+        "Self-compassion is treating yourself the way you would treat someone you love who is hurting — not letting yourself go, not self-pity: speaking to yourself fairly.",
+        "It has three ingredients (from Kristin Neff's work):",
+      ],
+      volets: [
+        ["Kindness", "speaking to yourself gently instead of harshly."],
+        ["Common humanity", "remembering that suffering is part of being human — no one is alone in this."],
+        ["Mindful presence", "looking at what is here, without drowning in it or denying it."],
+      ],
+      fin: "The seven days alternate these three parts — that balance is what roots it."
+    },
+    trois: {
+      t: "Three weeks for yourself",
+      p: [
+        "A longer journey in three movements: looking at what is here, speaking to yourself differently, then moving forward.",
+        "Repetition makes the difference — not perfection. Days when you write three words count as much as the big pages.",
+      ],
+    },
+    conf: {
+      t: "Confidence",
+      p: [
+        "Confidence is not a magic state: it is the sum of concrete proof and fair words, accumulated over time.",
+        "This journey helps you see what you already do well, and to speak to yourself like someone you believe in.",
+      ],
+    },
+    cole: {
+      t: "Anger",
+      p: [
+        "Anger is not an enemy: it is a signal. It protects something — a boundary, a value, a need.",
+        "Listening to that signal and expressing it without breaking the bond: that is the skill. And it can be learned.",
+      ],
+    },
+    deui: {
+      t: "Grief and transitions",
+      p: [
+        "Every passage — chosen or not — asks you to leave something behind and get used to an after.",
+        "Finding it heavy is not weakness: it is the normal work of grief and transitions. It gets done at your own pace.",
+      ],
+    },
+    joie: {
+      t: "Joy",
+      p: [
+        "Joy can be cultivated: learning to notice it, to linger on it, and even to make a little room for it.",
+        "That is not naivety — it is training in the good, to balance everything else.",
+      ],
+    },
+  };
+
+  var TONS = ["#036798", "#b8437e", "#7A2E4D", "#6d4fa8", "#852B66", "#7096d1", "#3d4e8f",
+              "#036798", "#b8437e", "#7A2E4D", "#6d4fa8", "#852B66", "#7096d1", "#3d4e8f",
+              "#036798", "#b8437e", "#7A2E4D", "#6d4fa8", "#852B66", "#7096d1", "#3d4e8f"];
+  var SOFTS = ["#e6f1f8", "#fbe9f1", "#f4e8ee", "#f0ebf9", "#f9e8f1", "#edf3fb", "#ecedf8",
+               "#e6f1f8", "#fbe9f1", "#f4e8ee", "#f0ebf9", "#f9e8f1", "#edf3fb", "#ecedf8",
+               "#e6f1f8", "#fbe9f1", "#f4e8ee", "#f0ebf9", "#f9e8f1", "#edf3fb", "#ecedf8"];
+  var CLE = "mieux-etre-v1";
+  var MOIS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+  var stockageOk = true;
+  try {
+    window.localStorage.setItem("__test_mt", "1");
+    window.localStorage.removeItem("__test_mt");
+  } catch (e) { stockageOk = false; }
+
+  var etat = { version: 3, parcours: "auto", reponses: {}, archives: [] };
+
+  function parcoursCourant() {
+    for (var i = 0; i < PARCOURS.length; i++) if (PARCOURS[i].id === etat.parcours) return PARCOURS[i];
+    return PARCOURS[0];
+  }
+
+  function charger() {
+    if (!stockageOk) return;
+    try {
+      var brut = window.localStorage.getItem(CLE);
+      if (!brut) return;
+      var d = JSON.parse(brut);
+      if (!d || typeof d !== "object") return;
+      if (typeof d.parcours === "string") etat.parcours = d.parcours;
+      if (d.reponses && typeof d.reponses === "object") {
+        var cles = Object.keys(d.reponses);
+        var nouveauFormat = false;
+        for (var i = 0; i < cles.length; i++) if (cles[i].indexOf(":") !== -1) nouveauFormat = true;
+        for (var j = 0; j < cles.length; j++) {
+          var v = d.reponses[cles[j]];
+          if (typeof v !== "string") continue;
+          var k = cles[j];
+          if (!nouveauFormat && /^\d+$/.test(k)) k = "auto:" + k;
+          etat.reponses[k] = v;
+        }
+      }
+      etat.archives = normaliserArchives(d.archives);
+    } catch (e) { /* starting fresh */ }
+  }
+
+  function sauver() {
+    if (!stockageOk) return;
+    try {
+      window.localStorage.setItem(CLE, JSON.stringify({ version: 3, parcours: etat.parcours, reponses: etat.reponses, archives: etat.archives }));
+    } catch (e) { /* silencieux */ }
+  }
+
+  var elJours = document.getElementById("navJours");
+  var elCarte = document.getElementById("carte");
+  var elLabel = document.getElementById("jourLabel");
+  var elVolet = document.getElementById("volet");
+  var elIntro = document.getElementById("intro");
+  var elQuestion = document.getElementById("question");
+  var elReponse = document.getElementById("reponse");
+  var elPrec = document.getElementById("btnPrec");
+  var elSuiv = document.getElementById("btnSuiv");
+  var elToutNote = document.getElementById("toutnote");
+  var elBtnResume = document.getElementById("btnResume");
+  var elVoile = document.getElementById("voile");
+  var elPanneau = document.getElementById("panneau");
+  var elVoileResume = document.getElementById("voileResume");
+  var elResume = document.getElementById("resume");
+  var elResumeCorps = document.getElementById("resumeCorps");
+  var elEffacer = document.getElementById("btnEffacer");
+  var elSel = document.getElementById("selParcours");
+  var elAudio = document.getElementById("btnAudio");
+  var elIcoAudio = document.getElementById("icoAudio");
+  var elArchives = document.getElementById("archivesBox");
+  var elVoileArch = document.getElementById("voileArch");
+  var elArchPan = document.getElementById("archPan");
+  var TEXTE_EFFACER = "Erase all my answers";
+
+  var jour = 1;
+  var minuteur = null;
+  var audioEnCours = false;
+
+  function cle(i) { return etat.parcours + ":" + i; }
+
+  function repondu(i) {
+    var r = etat.reponses[cle(i)];
+    return !!(r && r.replace(/\s/g, "") !== "");
+  }
+
+  function premierJourACrire() {
+    var p = parcoursCourant();
+    for (var i = 1; i <= p.Q.length; i++) if (!repondu(i)) return i;
+    return p.Q.length;
+  }
+
+  function toutRepondu() {
+    var p = parcoursCourant();
+    for (var i = 1; i <= p.Q.length; i++) if (!repondu(i)) return false;
+    return true;
+  }
+
+  function dateISO() {
+    var d = new Date();
+    var m = d.getMonth() + 1, j = d.getDate();
+    return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (j < 10 ? "0" : "") + j;
+  }
+
+  function fmtDateISO(s) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    var p = s.split("-");
+    return parseInt(p[2], 10) + " " + MOIS[parseInt(p[1], 10) - 1] + " " + p[0];
+  }
+
+  function normaliserArchives(liste) {
+    var out = [];
+    if (!Array.isArray(liste)) return out;
+    for (var a = 0; a < liste.length && out.length < 50; a++) {
+      var ar = liste[a];
+      if (!ar || typeof ar !== "object" || !ar.reponses) continue;
+      var par = null;
+      for (var q = 0; q < PARCOURS.length; q++) if (PARCOURS[q].id === ar.parcours) par = PARCOURS[q];
+      if (!par) continue;
+      var rep = {};
+      var clesAr = Object.keys(ar.reponses);
+      for (var c = 0; c < clesAr.length; c++) {
+        var n = parseInt(clesAr[c], 10);
+        if (n >= 1 && n <= par.Q.length && typeof ar.reponses[clesAr[c]] === "string") rep[n] = ar.reponses[clesAr[c]];
+      }
+      out.push({
+        id: typeof ar.id === "string" ? ar.id : String(Date.now()) + "-" + a,
+        parcours: ar.parcours,
+        fin: typeof ar.fin === "string" ? ar.fin : "",
+        reponses: rep
+      });
+    }
+    return out;
+  }
+
+  function remplirSelecteur() {
+    elSel.textContent = "";
+    for (var i = 0; i < PARCOURS.length; i++) {
+      var o = document.createElement("option");
+      o.value = PARCOURS[i].id;
+      o.textContent = PARCOURS[i].titre;
+      if (PARCOURS[i].id === etat.parcours) o.selected = true;
+      elSel.appendChild(o);
+    }
+  }
+
+  function faireAller(n) {
+    return function () { aller(n); }
+  }
+
+  function rendreJours() {
+    var p = parcoursCourant();
+    elJours.className = "jours" + (p.Q.length > 10 ? " compact" : "");
+    var frag = document.createDocumentFragment();
+    for (var i = 1; i <= p.Q.length; i++) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.style.setProperty("--j", TONS[(i - 1) % TONS.length]);
+      b.style.setProperty("--js", SOFTS[(i - 1) % SOFTS.length]);
+      b.className = "pastille" + (i === jour ? " active" : "") + (repondu(i) ? " rempli" : "");
+      b.textContent = String(i);
+      b.setAttribute("aria-label", "Day " + i + (repondu(i) ? " — answered" : ""));
+      b.addEventListener("click", faireAller(i));
+      frag.appendChild(b);
+    }
+    elJours.textContent = "";
+    elJours.appendChild(frag);
+  }
+
+  function arreterAudio() {
+    audioEnCours = false;
+    elAudio.classList.remove("on");
+    elAudio.setAttribute("aria-pressed", "false");
+    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
+  }
+
+  function rendre() {
+    var p = parcoursCourant();
+    elCarte.style.setProperty("--j", TONS[(jour - 1) % TONS.length]);
+    elLabel.textContent = "Day " + jour + " of " + p.Q.length;
+    if (p.VOL && p.VOL[jour - 1]) {
+      elVolet.textContent = "Part — " + p.VOL[jour - 1];
+      elVolet.hidden = false;
+    } else {
+      elVolet.hidden = true;
+    }
+    elIntro.textContent = p.I[jour - 1];
+    elQuestion.textContent = p.Q[jour - 1];
+    elReponse.value = etat.reponses[cle(jour)] || "";
+    elPrec.disabled = jour <= 1;
+    elSuiv.disabled = jour >= p.Q.length;
+    rendreJours();
+    var fini = toutRepondu();
+    elToutNote.hidden = !fini;
+    elBtnResume.hidden = !fini;
+    rendreArchives();
+  }
+
+  function aller(n) {
+    var p = parcoursCourant();
+    if (n < 1 || n > p.Q.length || n === jour) return;
+    if (minuteur) { clearTimeout(minuteur); minuteur = null; sauver(); }
+    arreterAudio();
+    jour = n;
+    rendre();
+  }
+
+  // ---- Lecture audio ----
+  elAudio.addEventListener("click", function () {
+    if (!("speechSynthesis" in window)) return;
+    if (audioEnCours) { arreterAudio(); return; }
+    try {
+      var p = parcoursCourant();
+      var u = new SpeechSynthesisUtterance(p.I[jour - 1] + " " + p.Q[jour - 1]);
+      u.lang = "en-CA";
+      u.rate = 0.98;
+      u.onend = function () { arreterAudio(); };
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+      audioEnCours = true;
+      elAudio.classList.add("on");
+      elAudio.setAttribute("aria-pressed", "true");
+    } catch (e) { arreterAudio(); }
+  });
+  if (!("speechSynthesis" in window)) elAudio.style.display = "none";
+  window.addEventListener("pagehide", function () { arreterAudio(); });
+
+  elSel.addEventListener("change", function () {
+    etat.parcours = elSel.value;
+    arreterAudio();
+    if (minuteur) { clearTimeout(minuteur); minuteur = null; }
+    sauver();
+    jour = premierJourACrire();
+    rendre();
+  });
+
+  elReponse.addEventListener("input", function () {
+    etat.reponses[cle(jour)] = elReponse.value;
+    if (minuteur) clearTimeout(minuteur);
+    minuteur = setTimeout(function () {
+      minuteur = null;
+      sauver();
+      rendreJours();
+      var fini = toutRepondu();
+      elToutNote.hidden = !fini;
+      elBtnResume.hidden = !fini;
+      rendreArchives();
+    }, 400);
+  });
+
+  window.addEventListener("pagehide", function () {
+    if (minuteur) { clearTimeout(minuteur); minuteur = null; }
+    sauver();
+  });
+
+  elPrec.addEventListener("click", function () { aller(jour - 1); });
+  elSuiv.addEventListener("click", function () { aller(jour + 1); });
+
+  // ---- Journey summary ----
+  function ajouterSepVolet(corps, p, i) {
+    if (!p.VOL) return;
+    if (i === 1 || p.VOL[i - 1] !== p.VOL[i - 2]) {
+      var sep = document.createElement("div");
+      sep.className = "vsep";
+      sep.textContent = p.VOL[i - 1];
+      corps.appendChild(sep);
+    }
+  }
+
+  function ouvrirResume() {
+    var p = parcoursCourant();
+    elResumeCorps.textContent = "";
+    var s1 = document.createElement("p");
+    s1.className = "intro";
+    s1.style.marginTop = "0";
+    s1.textContent = p.titre;
+    elResumeCorps.appendChild(s1);
+    for (var i = 1; i <= p.Q.length; i++) {
+      ajouterSepVolet(elResumeCorps, p, i);
+      var bloc = document.createElement("div");
+      bloc.className = "rbloc";
+      bloc.style.setProperty("--t", TONS[(i - 1) % TONS.length]);
+      bloc.setAttribute("data-j", String(i));
+      var num = document.createElement("div");
+      num.className = "rnum";
+      num.textContent = "Day " + i;
+      var q = document.createElement("div");
+      q.className = "rq";
+      q.textContent = p.Q[i - 1];
+      var a = document.createElement("p");
+      var r = etat.reponses[cle(i)];
+      var vide = !(r && r.replace(/\s/g, "") !== "");
+      a.className = "ra" + (vide ? " vide" : "");
+      a.textContent = vide ? "(not answered yet)" : r.trim();
+      bloc.appendChild(num);
+      bloc.appendChild(q);
+      bloc.appendChild(a);
+      elResumeCorps.appendChild(bloc);
+    }
+    var fin = document.createElement("p");
+    fin.className = "intro";
+    fin.style.marginBottom = "14px";
+    fin.textContent = "If you want to go further with all of this, these answers can be reviewed during a brief intervention with a sexologist (authentiquesexo.ca). And remember: this is a self-guided tool — it does not replace follow-up care.";
+    elResumeCorps.appendChild(fin);
+    elVoileResume.hidden = false;
+    elResume.hidden = false;
+  }
+  function fermerResume() {
+    elVoileResume.hidden = true;
+    elResume.hidden = true;
+  }
+  elBtnResume.addEventListener("click", ouvrirResume);
+  elVoileResume.addEventListener("click", fermerResume);
+  document.getElementById("btnFermerResume").addEventListener("click", fermerResume);
+  elResumeCorps.addEventListener("click", function (e) {
+    var b = e.target && e.target.closest ? e.target.closest(".rbloc") : null;
+    if (!b) return;
+    var n = parseInt(b.getAttribute("data-j"), 10);
+    if (n >= 1 && n <= parcoursCourant().Q.length) { fermerResume(); aller(n); }
+  });
+  document.getElementById("btnExporterResume").addEventListener("click", function () {
+    fermerResume();
+    exporterTxt();
+  });
+
+  // ---- Archives de parcours ----
+  function rendreArchives() {
+    elArchives.textContent = "";
+    var p = parcoursCourant();
+    var mes = [];
+    for (var a = 0; a < etat.archives.length; a++) if (etat.archives[a].parcours === p.id) mes.push(etat.archives[a]);
+    if (!mes.length) return;
+    var box = document.createElement("div");
+    box.className = "archbox";
+    var h = document.createElement("h3");
+    h.textContent = "Past journeys (" + mes.length + ")";
+    box.appendChild(h);
+    for (var i = 0; i < mes.length; i++) box.appendChild(creerLigneArchive(mes[i]));
+    elArchives.appendChild(box);
+  }
+
+  function creerLigneArchive(ar) {
+    var row = document.createElement("div");
+    row.className = "archrow";
+    var d = document.createElement("div");
+    var dd = document.createElement("div");
+    dd.className = "ad";
+    dd.textContent = "Completed on " + (ar.fin ? fmtDateISO(ar.fin) : "—");
+    var nn = document.createElement("div");
+    nn.className = "an";
+    var nb = 0, ks = Object.keys(ar.reponses);
+    for (var z = 0; z < ks.length; z++) if (ar.reponses[ks[z]] && ar.reponses[ks[z]].replace(/\s/g, "") !== "") nb++;
+    nn.textContent = nb + " answer" + (nb > 1 ? "s" : "");
+    d.appendChild(dd);
+    d.appendChild(nn);
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = "Read again";
+    b.addEventListener("click", function () { ouvrirArchive(ar); });
+    row.appendChild(d);
+    row.appendChild(b);
+    return row;
+  }
+
+  function ouvrirArchive(ar) {
+    var p = null;
+    for (var q = 0; q < PARCOURS.length; q++) if (PARCOURS[q].id === ar.parcours) p = PARCOURS[q];
+    if (!p) return;
+    document.getElementById("archTitre").textContent = "Journey completed" + (ar.fin ? " le " + fmtDateISO(ar.fin) : "");
+    var corps = document.getElementById("archCorps");
+    corps.textContent = "";
+    var s0 = document.createElement("p");
+    s0.className = "intro";
+    s0.style.marginTop = "0";
+    s0.textContent = p.titre;
+    corps.appendChild(s0);
+    for (var i = 1; i <= p.Q.length; i++) {
+      var r = ar.reponses[i] || ar.reponses[String(i)];
+      if (!r || r.replace(/\s/g, "") === "") continue;
+      ajouterSepVolet(corps, p, i);
+      var bloc = document.createElement("div");
+      bloc.className = "rbloc";
+      bloc.style.setProperty("--t", TONS[(i - 1) % TONS.length]);
+      var num = document.createElement("div");
+      num.className = "rnum";
+      num.textContent = "Day " + i;
+      var qq = document.createElement("div");
+      qq.className = "rq";
+      qq.textContent = p.Q[i - 1];
+      var aa = document.createElement("p");
+      aa.className = "ra";
+      aa.textContent = r.trim();
+      bloc.appendChild(num);
+      bloc.appendChild(qq);
+      bloc.appendChild(aa);
+      corps.appendChild(bloc);
+    }
+    elVoileArch.hidden = false;
+    elArchPan.hidden = false;
+  }
+
+  function fermerArchive() { elVoileArch.hidden = true; elArchPan.hidden = true; }
+
+  var elBtnRecommencer = document.getElementById("btnRecommencer");
+  var recoConfirme = false;
+  var recoMinuteur = null;
+
+  function resetRecommencer() {
+    recoConfirme = false;
+    if (recoMinuteur) { clearTimeout(recoMinuteur); recoMinuteur = null; }
+    elBtnRecommencer.textContent = "Start this journey again";
+  }
+
+  elBtnRecommencer.addEventListener("click", function () {
+    if (!recoConfirme) {
+      recoConfirme = true;
+      elBtnRecommencer.textContent = "Click again: your answers will be archived";
+      if (recoMinuteur) clearTimeout(recoMinuteur);
+      recoMinuteur = setTimeout(resetRecommencer, 4500);
+      return;
+    }
+    var p = parcoursCourant();
+    var rep = {};
+    for (var i = 1; i <= p.Q.length; i++) {
+      var r = etat.reponses[cle(i)];
+      if (r && r.replace(/\s/g, "") !== "") rep[i] = r;
+    }
+    etat.archives.unshift({ id: "a" + Date.now(), parcours: p.id, fin: dateISO(), reponses: rep });
+    if (etat.archives.length > 50) etat.archives = etat.archives.slice(0, 50);
+    for (var k = 1; k <= p.Q.length; k++) delete etat.reponses[cle(k)];
+    sauver();
+    resetRecommencer();
+    fermerResume();
+    arreterAudio();
+    jour = 1;
+    rendre();
+  });
+
+  document.getElementById("btnFermerArch").addEventListener("click", fermerArchive);
+  elVoileArch.addEventListener("click", fermerArchive);
+
+  // ---- Bulles de concepts (info) ----
+  function ouvrirInfo() {
+    var p = parcoursCourant();
+    var inf = INFOS[p.id];
+    if (!inf) return;
+    document.getElementById("infoTitre").textContent = inf.t;
+    var corps = document.getElementById("infoCorps");
+    corps.textContent = "";
+    inf.p.forEach(function (para) {
+      var el = document.createElement("p");
+      el.className = "intro";
+      el.style.marginTop = "0";
+      el.textContent = para;
+      corps.appendChild(el);
+    });
+    if (inf.volets) {
+      inf.volets.forEach(function (vo) {
+        var d = document.createElement("div");
+        d.className = "infVolet";
+        var b = document.createElement("b");
+        b.textContent = vo[0];
+        d.appendChild(b);
+        d.appendChild(document.createTextNode(" — " + vo[1]));
+        corps.appendChild(d);
+      });
+    }
+    if (inf.fin) {
+      var f = document.createElement("p");
+      f.className = "intro";
+      f.textContent = inf.fin;
+      corps.appendChild(f);
+    }
+    elVoileInfo.hidden = false;
+    elInfoPan.hidden = false;
+  }
+  function fermerInfo() { elVoileInfo.hidden = true; elInfoPan.hidden = true; }
+  var elBtnInfo = document.getElementById("btnInfo");
+  var elVoileInfo = document.getElementById("voileInfo");
+  var elInfoPan = document.getElementById("infoPan");
+  elBtnInfo.addEventListener("click", ouvrirInfo);
+  elVoileInfo.addEventListener("click", fermerInfo);
+  document.getElementById("btnFermerInfo").addEventListener("click", fermerInfo);
+
+  // ---- Settings ----
+  function ouvrirPanneau() { elVoile.hidden = false; elPanneau.hidden = false; }
+  function fermerPanneau() { elVoile.hidden = true; elPanneau.hidden = true; resetEffacer(); }
+  document.getElementById("btnReglages").addEventListener("click", ouvrirPanneau);
+  document.getElementById("btnFermer").addEventListener("click", fermerPanneau);
+  elVoile.addEventListener("click", fermerPanneau);
+
+  function telecharger(nom, contenu, type) {
+    var blob = new Blob([contenu], { type: type + ";charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = nom;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+
+  function dateLongue() {
+    var d = new Date();
+    return d.getDate() + " " + MOIS[d.getMonth()] + " " + d.getFullYear();
+  }
+
+  function exporterTxt() {
+    var p = parcoursCourant();
+    var l = [];
+    l.push("Mieux-être — " + p.titre);
+    l.push("Exported on " + dateLongue());
+    l.push("");
+    for (var i = 1; i <= p.Q.length; i++) {
+      l.push("Day " + i);
+      l.push(p.Q[i - 1]);
+      var r = etat.reponses[cle(i)];
+      l.push(r && r.replace(/\s/g, "") !== "" ? r.trim() : "(not answered yet)");
+      l.push("");
+    }
+    telecharger("mieux-etre-answers.txt", l.join("\n"), "text/plain");
+  }
+
+  document.getElementById("btnTxt").addEventListener("click", exporterTxt);
+
+  document.getElementById("btnJson").addEventListener("click", function () {
+    var d = { app: "mieux-etre", version: 3, parcours: etat.parcours, reponses: etat.reponses, archives: etat.archives };
+    telecharger("mieux-etre-sauvegarde.json", JSON.stringify(d, null, 2), "application/json");
+  });
+
+  document.getElementById("inpImport").addEventListener("change", function () {
+    var f = this.files && this.files[0];
+    if (!f) return;
+    var lecteur = new FileReader();
+    lecteur.onload = function () {
+      try {
+        var d = JSON.parse(String(lecteur.result));
+        if (!d || !d.reponses || typeof d.reponses !== "object") throw new Error("format");
+        var neuf = {};
+        var cles = Object.keys(d.reponses);
+        var nouveauFormat = false;
+        for (var i = 0; i < cles.length; i++) if (cles[i].indexOf(":") !== -1) nouveauFormat = true;
+        for (var j = 0; j < cles.length; j++) {
+          var v = d.reponses[cles[j]];
+          if (typeof v !== "string") continue;
+          var k = cles[j];
+          if (!nouveauFormat && /^\d+$/.test(k)) k = "auto:" + k;
+          neuf[k] = v;
+        }
+        etat.reponses = neuf;
+        if (typeof d.parcours === "string") etat.parcours = d.parcours;
+        if (Array.isArray(d.archives)) etat.archives = normaliserArchives(d.archives);
+        remplirSelecteur();
+        sauver();
+        jour = premierJourACrire();
+        rendre();
+        fermerPanneau();
+      } catch (err) {
+        window.alert("This file does not look like a Mieux-être backup.");
+      }
+    };
+    lecteur.readAsText(f);
+    this.value = "";
+  });
+
+  var effConfirme = false;
+  var effMinuteur = null;
+
+  function resetEffacer() {
+    effConfirme = false;
+    if (effMinuteur) { clearTimeout(effMinuteur); effMinuteur = null; }
+    elEffacer.textContent = TEXTE_EFFACER;
+  }
+
+  elEffacer.addEventListener("click", function () {
+    if (!effConfirme) {
+      effConfirme = true;
+      elEffacer.textContent = "Click again to really erase";
+      if (effMinuteur) clearTimeout(effMinuteur);
+      effMinuteur = setTimeout(resetEffacer, 5000);
+      return;
+    }
+    etat.reponses = {};
+    etat.archives = [];
+    sauver();
+    jour = 1;
+    rendre();
+    fermerPanneau();
+  });
+
+  charger();
+  remplirSelecteur();
+  jour = premierJourACrire();
+  rendre();
+})();
+</script>
+</body>
+</html>

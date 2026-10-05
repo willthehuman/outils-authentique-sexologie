@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matrice ACT — ce qui compte, et le chemin pour y aller</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #f7f5f1;
+    color: #2c3642;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+    padding-bottom: 40px;
+  }
+  .page { max-width: 640px; margin: 0 auto; padding: 22px 14px 40px; }
+  header.top { text-align: center; position: relative; margin-bottom: 12px; }
+  header.top h1 { font-size: 27px; margin: 0 0 4px; font-weight: 650; letter-spacing: -.01em; }
+  .soust { color: #8a939d; font-size: 15px; margin: 0; }
+  #btnReglages { position: absolute; right: 0; top: 4px; background: none; border: none; color: #a3acb6; font-size: 14.5px; font-family: inherit; cursor: pointer; padding: 4px 2px; }
+  #btnReglages:hover { color: #2c3642; }
+
+  .card { background: #fff; border-radius: 18px; padding: 16px 16px 14px; margin: 0 0 14px; box-shadow: 0 8px 26px rgba(46,38,28,.06); }
+  h2.sec { font-size: 13px; letter-spacing: 1.4px; text-transform: uppercase; color: #a3acb6; margin: 22px 2px 10px; font-weight: 700; }
+  .small { font-size: .86rem; }
+  .muted { color: #8a939d; }
+  .info { color: #8a939d; font-size: .86rem; margin: 0; }
+  b.lead { color: #2c3642; }
+
+  /* --- grille matrice --- */
+  .axes-top, .axes-bot { text-align: center; font-size: 12.5px; letter-spacing: 1.2px; text-transform: uppercase; color: #a3acb6; font-weight: 700; margin: 8px 0; }
+  .axes-top span, .axes-bot span { background: #fff; border-radius: 999px; padding: 4px 12px; box-shadow: 0 4px 14px rgba(46,38,28,.05); }
+  .mxgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .quad { background: #fff; border-radius: 16px; padding: 13px 12px 11px; box-shadow: 0 8px 26px rgba(46,38,28,.06); border-top: 3px solid var(--qc, #036798); display: flex; flex-direction: column; min-height: 150px; }
+  .quad .qhead { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .quad h3 { margin: 0; font-size: .95rem; line-height: 1.3; }
+  .quad .qside { font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--qc, #036798); font-weight: 800; margin: 0 0 4px; }
+  .infoBtn { border: 0; background: transparent; color: #b3bcc5; cursor: pointer; padding: 2px 3px; border-radius: 8px; line-height: 0; flex: none; }
+  .infoBtn:hover { color: #036798; }
+  ul.items { list-style: none; margin: 8px 0 6px; padding: 0; }
+  ul.items li { display: flex; align-items: flex-start; gap: 6px; background: var(--qb, #f2f5f8); border-radius: 10px; padding: 6px 8px; margin: 0 0 5px; font-size: .9rem; }
+  ul.items li span { flex: 1; min-width: 0; overflow-wrap: break-word; }
+  .xmini { border: 0; background: transparent; color: #a3acb6; cursor: pointer; font-size: 14px; line-height: 1; padding: 1px 3px; border-radius: 6px; flex: none; }
+  .xmini:hover { color: #b8437e; }
+  .qadd { display: flex; gap: 6px; margin-top: auto; padding-top: 6px; }
+  .qadd input { flex: 1; min-width: 0; border: 1.5px solid #e8e3db; border-radius: 10px; padding: .42rem .6rem; font: inherit; font-size: .88rem; background: #fff; color: #2c3642; }
+  .qadd button { flex: none; border: 0; border-radius: 10px; background: #dceafa; color: #036798; font-family: inherit; font-weight: 700; font-size: .82rem; padding: .42rem .7rem; cursor: pointer; }
+  .qadd button:hover { background: #cfe0f3; }
+  .coeur { margin-top: 10px; }
+  .coeur label { display: block; font-size: .88rem; font-weight: 700; color: #036798; margin: 0 0 6px; }
+  .coeur textarea, .comp textarea { width: 100%; border: 1.5px solid #e8e3db; border-radius: 12px; padding: 10px 12px; font: inherit; font-size: .95rem; line-height: 1.5; min-height: 60px; resize: vertical; color: #2c3642; background: #fff; }
+  .coeur textarea:focus, .comp textarea:focus, .qadd input:focus { outline: none; border-color: #036798; }
+
+  /* --- composantes --- */
+  .comp { background: #fff; border-radius: 16px; padding: 14px 14px 12px; margin: 0 0 10px; box-shadow: 0 8px 26px rgba(46,38,28,.06); border-left: 4px solid var(--qc, #036798); }
+  .comp .chead { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .comp h3 { margin: 0; font-size: 1rem; }
+  .badge { font-size: 10.5px; letter-spacing: .8px; text-transform: uppercase; font-weight: 800; border-radius: 999px; padding: 3px 9px; background: var(--qb, #e6f1f8); color: var(--qc, #036798); }
+  .comp .ctxt { font-size: .9rem; margin: 8px 0 8px; color: #4a5866; }
+  .comp .cq { font-size: .92rem; font-weight: 650; margin: 0 0 8px; }
+
+  .btn { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 12px; padding: .6rem 1rem; font: inherit; font-weight: 700; font-size: .9rem; cursor: pointer; background: linear-gradient(135deg,#1389c1,#036798); color: #fff; }
+  .btn:hover { background: linear-gradient(135deg,#0d6fa2,#02567f); }
+  .btn.clair { background: #dceafa; color: #036798; }
+  .btn.clair:hover { background: #cfe0f3; }
+  .btn.danger { background: #fbe9f1; color: #a03a6b; }
+  .btn.large { display: block; width: 100%; text-align: center; margin: 0 0 10px; }
+  .btnrow { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mention { text-align: center; color: #8a939d; font-size: 13px; margin: 20px 8px 0; }
+  .mention a { color: #036798; }
+  .credit { text-align: center; color: #b3bcc5; font-size: 12px; margin: 10px 8px 0; }
+
+  .voile { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(40,34,28,.35); z-index: 10; }
+  .panneau { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: 100%; max-width: 640px; z-index: 11; background: #fffdfa; border-radius: 20px 20px 0 0; padding: 20px 18px 24px; box-shadow: 0 -12px 40px rgba(46,38,28,.18); max-height: 88vh; overflow: auto; }
+  .panneau h2 { margin: 0 0 12px; font-size: 19px; }
+  .panneau p { font-size: .92rem; }
+  .importlabel { cursor: pointer; }
+  .importlabel input { display: none; }
+  [hidden] { display: none !important; }
+  #toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(10px); background: #3a4652; color: #fff; border-radius: 999px; padding: .5rem .95rem; font-size: .85rem; font-weight: 600; opacity: 0; pointer-events: none; transition: all .25s; z-index: 70; max-width: 90vw; }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (max-width: 560px) { .mxgrid { grid-template-columns: 1fr; } .quad { min-height: 0; } }
+  @media print {
+    #btnReglages, .infoBtn, .qadd, .xmini, .btn, .mention-actions, #toast { display: none !important; }
+    body { background: #fff; font-size: 13px; }
+    .card, .quad, .comp { box-shadow: none; border: 1px solid #ddd; }
+    .mxgrid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .outbar {
+    max-width: 640px; margin: 0 auto; padding: 12px 16px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: .85rem;
+  }
+  .outbar a { color: #036798; text-decoration: none; font-weight: 600; }
+  .outbar a:hover { text-decoration: underline; }
+  .outbar .langsw { color: #a3acb6; }
+  .outbar .langsw b { color: #b8437e; }
+  .outbar .langsw a { margin-left: 7px; }
+</style>
+</head>
+<body>
+<div class="outbar"><a href="../">← Tous les outils</a><span class="langsw"><b>FR</b><a href="en.html">EN</a></span></div>
+<div class="page">
+  <header class="top">
+    <h1>Matrice ACT</h1>
+    <p class="soust">Ce qui compte pour toi, et le chemin pour y aller.</p>
+    <button id="btnReglages" type="button">Réglages</button>
+  </header>
+
+  <div class="card">
+    <p class="small" style="margin:0">
+      La matrice est une carte simple de ton expérience. <b>À gauche</b> : ce qui t'éloigne de ce qui compte.
+      <b>À droite</b> : ce qui t'en approche. <b>En haut</b> : ce qui se passe en dedans (pensées, émotions, souvenirs).
+      <b>En bas</b> : ce qui se voit (tes gestes, tes actions). Au centre : <b>celui·celle qui remarque tout ça</b> — toi.
+    </p>
+  </div>
+
+  <h2 class="sec">La matrice</h2>
+  <div class="axes-top"><span>En dedans — l'expérience mentale</span></div>
+  <div class="mxgrid" id="grille"></div>
+  <div class="axes-bot"><span>En dehors — les 5 sens : ce qui se voit, s'entend, se fait</span></div>
+
+  <div class="card coeur">
+    <label for="coeur">Au centre — qui·ce qui compte le plus pour moi…</label>
+    <textarea id="coeur" placeholder="Les personnes, les liens, les rôles, ce que je veux incarner…"></textarea>
+  </div>
+
+  <h2 class="sec">Comment remplir ta matrice</h2>
+  <div class="card">
+    <p class="small" style="margin:0 0 8px"><b class="lead">1.</b> Commence en haut à gauche : ce qui t'accroche, ces temps-ci.</p>
+    <p class="small" style="margin:0 0 8px"><b class="lead">2.</b> Puis en bas à gauche : ce que tu fais quand ça tire fort.</p>
+    <p class="small" style="margin:0 0 8px"><b class="lead">3.</b> Ensuite en haut à droite : qui, quoi, compte pour toi. Et au centre.</p>
+    <p class="small" style="margin:0"><b class="lead">4.</b> Termine par un tout petit pas, en bas à droite — faisable cette semaine.</p>
+  </div>
+
+  <h2 class="sec">La flexibilité psychologique — six composantes</h2>
+  <div class="card">
+    <p class="small" style="margin:0">
+      La flexibilité psychologique, c'est trois capacités qui se renforcent : être <b>ouvert·e</b> aux expériences difficiles,
+      <b>présent·e</b> à l'instant, et <b>engagé·e</b> vers ce qui compte. Six composantes la font vivre — voici ce que chacune
+      éclaire, avec une question pour réfléchir. Réponds à ton rythme ; ça se garde tout seul.
+    </p>
+  </div>
+  <div id="comps"></div>
+
+  <p class="mention">Un outil d'Authentique sexologie. L'utilisation est autonome et ne remplace pas une consultation ni un suivi avec une sexologue. Il est possible de revoir vos réponses lors d'une intervention brève : <a href="https://authentiquesexo.ca" target="_blank" rel="noopener">authentiquesexo.ca</a>.</p>
+  <p class="credit">D'après la matrice ACT (Polk et collaborateurs) et le modèle de flexibilité psychologique (Hayes et collaborateurs).</p>
+  <div class="btnrow mention-actions" style="justify-content:center;margin-top:14px">
+    <button class="btn clair" id="btnImprimer" type="button">Imprimer (ou PDF)</button>
+  </div>
+</div>
+
+<div class="voile" id="voile" hidden></div>
+<section class="panneau" id="panneau" hidden>
+  <h2>Réglages</h2>
+  <button class="btn clair large" id="btnTxt" type="button">Exporter ma matrice (texte lisible)</button>
+  <button class="btn clair large" id="btnJson" type="button">Sauvegarder tout (fichier .json)</button>
+  <label class="btn clair large importlabel">Importer une sauvegarde (.json)<input type="file" id="inpImport" accept=".json,application/json"></label>
+  <button class="btn danger large" id="btnEffacer" type="button">Effacer toutes mes réponses</button>
+  <button class="btn large" id="btnFermer" type="button">Fermer</button>
+</section>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var CLE = "matrice-act-v1";
+
+  var ICONES = {
+    plus: '<path d="M12 5.5v13M5.5 12h13"/>',
+    info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><path d="M12 8h.01"/>'
+  };
+  function ic(n, s) {
+    var p = ICONES[n]; if (!p) return "";
+    s = s || 16;
+    return '<svg viewBox="0 0 24 24" width="' + s + '" height="' + s + '" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+  }
+
+  var QUADS = [
+    { id: "tl", cote: "S'éloigner", t: "Ce qui m'accroche", qb: "#f4e8ee", qc: "#7A2E4D",
+      info: "Pensées, émotions, souvenirs, sensations difficiles qui tirent vers l'éloignement. On ne les choisit pas — elles sont là. Le travail : les remarquer sans se laisser mener (défusion, acceptation).",
+      q: "Qu'est-ce qui revient le plus souvent te tirer loin de ce qui compte ?" },
+    { id: "tr", cote: "S'approcher", t: "Qui·ce qui compte pour moi", qb: "#fbe9f1", qc: "#b8437e",
+      info: "Les personnes, les liens, les rôles, les qualités que tu veux incarner. C'est intérieur, ça ne se voit pas — mais ça guide tout le reste (les valeurs).",
+      q: "Si personne ne regardait, pour qui·quoi tu voudrais te lever le matin ?" },
+    { id: "bl", cote: "S'éloigner", t: "Ce que je fais quand ça tire fort", qb: "#f0ebf9", qc: "#6d4fa8",
+      info: "Les gestes visibles que l'on fait quand les accroches tirent : éviter, repousser, contrôler, se retirer, s'épuiser… Pas pour juger — juste pour voir.",
+      q: "Qu'est-ce que tu fais, concrètement, quand ça tire fort ?" },
+    { id: "br", cote: "S'approcher", t: "Mes pas vers", qb: "#edf3fb", qc: "#7096d1",
+      info: "De petites actions visibles et concrètes qui te rapprochent de ce qui compte. Pas le grand plan — le prochain petit pas, faisable cette semaine (l'action engagée).",
+      q: "Quel tout petit geste, cette semaine, irait vers ce qui compte ?" }
+  ];
+
+  var COMPS = [
+    { id: "acc", nom: "Acceptation", tag: "Ouvert", qb: "#e6f1f8", qc: "#036798",
+      t: "Faire de la place aux émotions et sensations difficiles, sans les combattre ni les nier. Elles sont là ; on leur fait de la place — et on avance quand même.",
+      q: "Quelle émotion essaies-tu de repousser en ce moment — et ce serait comment de lui faire juste un peu de place ?" },
+    { id: "def", nom: "Défusion", tag: "Ouvert", qb: "#e6f1f8", qc: "#036798",
+      t: "Prendre du recul sur les pensées : une pensée n'est pas un ordre, ni une vérité — c'est un événement mental. On peut la nommer (« je remarque la pensée que… ») et choisir.",
+      q: "Quelle pensée te mène le plus souvent — et que se passerait-il si tu la remarquais sans lui obéir ?" },
+    { id: "pre", nom: "Présence — contact avec l'instant", tag: "Présent", qb: "#f4e8ee", qc: "#7A2E4D",
+      t: "Revenir ici, maintenant — aux cinq sens — plutôt que dans les ruminations d'hier ou les scénarios de demain.",
+      q: "Par quel sens pourrais-tu revenir au moment présent, là, tout de suite ?" },
+    { id: "soi", nom: "Soi-contexte — celui·celle qui remarque", tag: "Présent", qb: "#f4e8ee", qc: "#7A2E4D",
+      t: "Tu n'es pas tes pensées ni tes émotions : tu es le lieu où elles passent. Le « je » qui remarque reste stable, même quand le contenu change.",
+      q: "Qu'est-ce qui, en toi, est resté le même à travers tes tempêtes des dernières années ?" },
+    { id: "val", nom: "Valeurs", tag: "Engagé", qb: "#fbe9f1", qc: "#b8437e",
+      t: "Ce qui compte vraiment : des directions, pas des destinations. On ne les atteint pas une fois pour toutes — on avance dedans.",
+      q: "Quelle direction veux-tu prendre soin d'honorer cette semaine ?" },
+    { id: "act", nom: "Action engagée", tag: "Engagé", qb: "#edf3fb", qc: "#7096d1",
+      t: "Des gestes concrets, petits et réguliers, au service de ce qui compte — avec ce qui est là, même imparfaitement.",
+      q: "Quel petit pas concret pourrais-tu poser d'ici trois jours ?" }
+  ];
+
+  var etat = { v: 1, quads: { tl: [], tr: [], bl: [], br: [] }, coeur: "", comps: {} };
+  var stockageOk = true;
+  try { window.localStorage.setItem("__t_ma", "1"); window.localStorage.removeItem("__t_ma"); } catch (e) { stockageOk = false; }
+
+  function charger() {
+    if (!stockageOk) return;
+    try {
+      var brut = window.localStorage.getItem(CLE);
+      if (!brut) return;
+      var d = JSON.parse(brut);
+      if (!d || typeof d !== "object") return;
+      if (d.quads && typeof d.quads === "object") {
+        QUADS.forEach(function (q) {
+          if (Array.isArray(d.quads[q.id])) {
+            etat.quads[q.id] = d.quads[q.id].slice(0, 60).filter(function (x) { return typeof x === "string" && x.trim(); }).map(function (x) { return x.slice(0, 200); });
+          }
+        });
+      }
+      if (typeof d.coeur === "string") etat.coeur = d.coeur.slice(0, 1200);
+      if (d.comps && typeof d.comps === "object") {
+        COMPS.forEach(function (c) {
+          var v = d.comps[c.id];
+          if (v && typeof v === "string") etat.comps[c.id] = v.slice(0, 2000);
+        });
+      }
+    } catch (e) { }
+  }
+  function sauver() {
+    if (!stockageOk) return;
+    try { window.localStorage.setItem(CLE, JSON.stringify(etat)); } catch (e) { stockageOk = false; }
+  }
+
+  var toastTimer = null;
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg; el.classList.add("show");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove("show"); }, 2200);
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
+  }
+
+  var elGrille = document.getElementById("grille");
+
+  function rendreGrille() {
+    elGrille.textContent = "";
+    QUADS.forEach(function (q) {
+      var d = document.createElement("section");
+      d.className = "quad";
+      d.style.setProperty("--qb", q.qb);
+      d.style.setProperty("--qc", q.qc);
+      var head = document.createElement("div");
+      head.className = "qhead";
+      var t = document.createElement("h3");
+      t.textContent = q.t;
+      var ib = document.createElement("button");
+      ib.type = "button";
+      ib.className = "infoBtn";
+      ib.title = "En savoir plus";
+      ib.innerHTML = ic("info", 17);
+      ib.addEventListener("click", function () { ouvrirInfo(q); });
+      head.appendChild(t); head.appendChild(ib);
+      d.appendChild(head);
+      var side = document.createElement("p");
+      side.className = "qside";
+      side.textContent = q.cote;
+      d.appendChild(side);
+      var ul = document.createElement("ul");
+      ul.className = "items";
+      etat.quads[q.id].forEach(function (txt, i) {
+        var li = document.createElement("li");
+        var sp = document.createElement("span");
+        sp.textContent = txt;
+        var x = document.createElement("button");
+        x.type = "button"; x.className = "xmini"; x.textContent = "✕"; x.title = "Retirer";
+        x.addEventListener("click", function () {
+          etat.quads[q.id].splice(i, 1); sauver(); rendreGrille(); toast("Retiré.");
+        });
+        li.appendChild(sp); li.appendChild(x);
+        ul.appendChild(li);
+      });
+      d.appendChild(ul);
+      var add = document.createElement("div");
+      add.className = "qadd";
+      var inp = document.createElement("input");
+      inp.type = "text"; inp.maxLength = 200;
+      inp.placeholder = "Ajouter…";
+      inp.setAttribute("aria-label", "Ajouter dans " + q.t);
+      var bt = document.createElement("button");
+      bt.type = "button"; bt.textContent = "＋";
+      function ajouter() {
+        var v = inp.value.replace(/\s+/g, " ").trim();
+        if (!v) { toast("Écris d'abord."); return; }
+        if (etat.quads[q.id].length >= 60) { toast("C'est bien assez pour aujourd'hui."); return; }
+        etat.quads[q.id].push(v.slice(0, 200)); sauver(); rendreGrille(); toast("Ajouté.");
+        var el2 = elGrille.querySelector('section:nth-child(' + (QUADS.indexOf(q) + 1) + ') .qadd input');
+        if (el2) el2.focus();
+      }
+      bt.addEventListener("click", ajouter);
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); ajouter(); } });
+      add.appendChild(inp); add.appendChild(bt);
+      d.appendChild(add);
+      elGrille.appendChild(d);
+    });
+  }
+
+  function rendreComps() {
+    var box = document.getElementById("comps");
+    box.textContent = "";
+    COMPS.forEach(function (c) {
+      var d = document.createElement("section");
+      d.className = "comp";
+      d.style.setProperty("--qb", c.qb);
+      d.style.setProperty("--qc", c.qc);
+      var head = document.createElement("div");
+      head.className = "chead";
+      var badge = document.createElement("span");
+      badge.className = "badge"; badge.textContent = c.tag;
+      var h = document.createElement("h3");
+      h.textContent = c.nom;
+      head.appendChild(badge); head.appendChild(h);
+      d.appendChild(head);
+      var tx = document.createElement("p");
+      tx.className = "ctxt"; tx.textContent = c.t;
+      d.appendChild(tx);
+      var qq = document.createElement("p");
+      qq.className = "cq"; qq.textContent = c.q;
+      d.appendChild(qq);
+      var ta = document.createElement("textarea");
+      ta.placeholder = "Pour toi, ici.";
+      ta.setAttribute("aria-label", "Réflexion — " + c.nom);
+      ta.value = etat.comps[c.id] || "";
+      var m = null;
+      ta.addEventListener("input", function () {
+        etat.comps[c.id] = ta.value;
+        if (m) clearTimeout(m);
+        m = setTimeout(function () { m = null; sauver(); }, 400);
+      });
+      d.appendChild(ta);
+      box.appendChild(d);
+    });
+  }
+
+  // coeur
+  var elCoeur = document.getElementById("coeur");
+  var mc = null;
+  elCoeur.addEventListener("input", function () {
+    etat.coeur = elCoeur.value;
+    if (mc) clearTimeout(mc);
+    mc = setTimeout(function () { mc = null; sauver(); }, 400);
+  });
+
+  // info
+  var elVoile = document.getElementById("voile");
+  var elPanneau = document.getElementById("panneau");
+  function ouvrirInfo(q) {
+    elPanneau.innerHTML = '<h2>' + esc(q.t) + '</h2>' +
+      '<p class="small">' + esc(q.info) + '</p>' +
+      '<p class="small"><b>' + esc(q.q) + '</b></p>' +
+      '<button class="btn large" id="btnFermerInfo" type="button">Fermer</button>';
+    elVoile.hidden = false; elPanneau.hidden = false;
+    document.getElementById("btnFermerInfo").addEventListener("click", fermerPanneau);
+  }
+  function ouvrirReglages() {
+    elPanneau.innerHTML =
+      '<h2>Réglages</h2>' +
+      '<button class="btn clair large" id="btnTxt" type="button">Exporter ma matrice (texte lisible)</button>' +
+      '<button class="btn clair large" id="btnJson" type="button">Sauvegarder tout (fichier .json)</button>' +
+      '<label class="btn clair large importlabel">Importer une sauvegarde (.json)<input type="file" id="inpImport" accept=".json,application/json"></label>' +
+      '<button class="btn danger large" id="btnEffacer" type="button">Effacer toutes mes réponses</button>' +
+      '<button class="btn large" id="btnFermer" type="button">Fermer</button>' +
+      '<p class="small muted" style="margin:14px 0 0">Tout reste sur cet appareil. Il est possible de revoir vos réponses lors d\'une intervention brève avec la sexologue : <a href="https://authentiquesexo.ca" target="_blank" rel="noopener">authentiquesexo.ca</a>.</p>';
+    elVoile.hidden = false; elPanneau.hidden = false;
+    document.getElementById("btnFermer").addEventListener("click", fermerPanneau);
+    document.getElementById("btnTxt").addEventListener("click", exporterTxt);
+    document.getElementById("btnJson").addEventListener("click", function () {
+      telecharger("matrice-act-sauvegarde.json", JSON.stringify(etat, null, 2), "application/json");
+    });
+    var effConfirme = false, effM = null;
+    var elEff = document.getElementById("btnEffacer");
+    elEff.addEventListener("click", function () {
+      if (!effConfirme) {
+        effConfirme = true;
+        elEff.textContent = "Clique encore pour effacer pour de vrai";
+        effM = setTimeout(function () { effConfirme = false; elEff.textContent = "Effacer toutes mes réponses"; }, 5000);
+        return;
+      }
+      etat = { v: 1, quads: { tl: [], tr: [], bl: [], br: [] }, coeur: "", comps: {} };
+      sauver(); elCoeur.value = ""; rendreGrille(); rendreComps(); fermerPanneau();
+      toast("Tout est effacé.");
+    });
+    var inp = document.getElementById("inpImport");
+    inp.addEventListener("change", function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      var r = new FileReader();
+      r.onload = function () {
+        try {
+          var d = JSON.parse(String(r.result));
+          if (!d || typeof d !== "object") throw new Error("format");
+          if (!d.quads && typeof d.coeur !== "string" && !d.comps) throw new Error("format");
+          etat = { v: 1, quads: { tl: [], tr: [], bl: [], br: [] }, coeur: "", comps: {} };
+          try { window.localStorage.setItem(CLE, JSON.stringify(d)); } catch (e) { }
+          charger();
+          elCoeur.value = etat.coeur || "";
+          rendreGrille(); rendreComps(); fermerPanneau(); toast("Sauvegarde importée.");
+        } catch (err) { toast("Ce fichier ne ressemble pas à une sauvegarde."); }
+      };
+      r.readAsText(f);
+      this.value = "";
+    });
+  }
+  function fermerPanneau() { elVoile.hidden = true; elPanneau.hidden = true; }
+  elVoile.addEventListener("click", fermerPanneau);
+  document.getElementById("btnReglages").addEventListener("click", ouvrirReglages);
+
+  function telecharger(nom, contenu, type) {
+    var blob = new Blob([contenu], { type: type + ";charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = nom;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+
+  function exporterTxt() {
+    var l = [];
+    l.push("Matrice ACT — mes réponses");
+    l.push("");
+    l.push("EN DEDANS — ce qui m'accroche (s'éloigner) :");
+    etat.quads.tl.forEach(function (x) { l.push("  • " + x); });
+    l.push("");
+    l.push("EN DEDANS — qui·ce qui compte (s'approcher) :");
+    etat.quads.tr.forEach(function (x) { l.push("  • " + x); });
+    l.push("");
+    l.push("EN DEHORS — ce que je fais quand ça tire fort (s'éloigner) :");
+    etat.quads.bl.forEach(function (x) { l.push("  • " + x); });
+    l.push("");
+    l.push("EN DEHORS — mes pas vers (s'approcher) :");
+    etat.quads.br.forEach(function (x) { l.push("  • " + x); });
+    l.push("");
+    if (etat.coeur.trim()) { l.push("AU CENTRE — ce qui compte le plus : " + etat.coeur.trim()); l.push(""); }
+    l.push("LA FLEXIBILITÉ PSYCHOLOGIQUE — mes réflexions :");
+    COMPS.forEach(function (c) {
+      var r = (etat.comps[c.id] || "").trim();
+      if (r) { l.push(""); l.push(c.nom + " — " + c.q); l.push(r); }
+    });
+    telecharger("matrice-act.txt", l.join("\n"), "text/plain");
+  }
+
+  document.getElementById("btnImprimer").addEventListener("click", function () { window.print(); });
+
+  charger();
+  rendreGrille();
+  rendreComps();
+  elCoeur.value = etat.coeur || "";
+})();
+</script>
+</body>
+</html>
